@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.4.33213.308
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SXAspApi", "SXAspApi\SXAspApi.csproj", "{A24C28E9-C79A-422F-B0B5-95A678DCAD0A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A24C28E9-C79A-422F-B0B5-95A678DCAD0A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A24C28E9-C79A-422F-B0B5-95A678DCAD0A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A24C28E9-C79A-422F-B0B5-95A678DCAD0A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A24C28E9-C79A-422F-B0B5-95A678DCAD0A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {A889B664-6D07-4A86-ABC7-667C48EFBEA5}
+	EndGlobalSection
+EndGlobal
