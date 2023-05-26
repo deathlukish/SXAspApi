@@ -10,12 +10,18 @@ namespace SXAspApi.Models
             var context = app.ApplicationServices
                     .CreateScope().ServiceProvider
                     .GetRequiredService<PhoneBookContext>();
+            var con = app.ApplicationServices
+                    .CreateScope().ServiceProvider
+                    .GetRequiredService<IdentityContext>();
 
             if (context.Database.GetPendingMigrations().Any())
             {
                 context.Database.Migrate();
             }
-
+            if (con.Database.GetPendingMigrations().Any())
+            {
+                context.Database.Migrate();
+            }
         }
     }
 }
