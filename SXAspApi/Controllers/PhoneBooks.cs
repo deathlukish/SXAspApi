@@ -15,8 +15,8 @@ namespace SXAspApi.Controllers
         { 
             _phoneBookService = phoneBookService;
         }
-        [HttpGet]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        //[HttpGet]
+        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<IEnumerable<PhoneBooks>> GetNotes() => await _phoneBookService.GetNotes();
     }
 }

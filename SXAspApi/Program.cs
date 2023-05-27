@@ -3,7 +3,9 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using SXAspApi.Controllers;
 using SXAspApi.Models;
+using SXAspApi.Services;
 using System.Security.Claims;
 using System.Text;
 
@@ -64,6 +66,7 @@ builder.Services.AddAuthentication(opts =>
         }
     };
 });
+builder.Services.AddScoped<IPhoneBookService, IPhone>();
 var app = builder.Build();
 SeedData.CreateMigrationBase(app);
 // Configure the HTTP request pipeline.
