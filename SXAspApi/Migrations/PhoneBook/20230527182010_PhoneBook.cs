@@ -2,9 +2,9 @@
 
 #nullable disable
 
-namespace SXAspApi.Migrations
+namespace SXAspApi.Migrations.PhoneBook
 {
-    public partial class PhonBook : Migration
+    public partial class PhoneBook : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

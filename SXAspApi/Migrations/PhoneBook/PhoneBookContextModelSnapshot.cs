@@ -2,19 +2,17 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SXAspApi.Models;
 
 #nullable disable
 
-namespace SXAspApi.Migrations
+namespace SXAspApi.Migrations.PhoneBook
 {
     [DbContext(typeof(PhoneBookContext))]
-    [Migration("20230526113935_PhonBook")]
-    partial class PhonBook
+    partial class PhoneBookContextModelSnapshot : ModelSnapshot
     {
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
