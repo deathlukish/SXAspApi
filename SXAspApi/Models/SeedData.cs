@@ -51,7 +51,27 @@ namespace SXAspApi.Models
                     LastName = "Иванов",
                     Adres = "Москва",
                     Description = "первая запись",
-                    Phone = "-79999999999"
+                    Phone = "+79999999999"
+                }
+                );
+                books.Notes.Add(new SharedLibPhoneBook.PhoneBook()
+                {
+                    FirsName = "Петр",
+                    MiddleName = "Петрович",
+                    LastName = "Петвов",
+                    Adres = "СПб",
+                    Description = "вторая запись",
+                    Phone = "+79999999998"
+                }
+                );
+                books.Notes.Add(new SharedLibPhoneBook.PhoneBook()
+                {
+                    FirsName = "Сидр",
+                    MiddleName = "Сидорович",
+                    LastName = "Сидоров",
+                    Adres = "Мухосранск",
+                    Description = "третья запись",
+                    Phone = "-79999999979"
                 }
                 );
                 books.SaveChanges();

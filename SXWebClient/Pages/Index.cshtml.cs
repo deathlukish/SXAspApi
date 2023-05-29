@@ -6,19 +6,15 @@ namespace SXWebClient.Pages
 {
     public class IndexModel : PageModel
     {
-        private readonly ILogger<IndexModel> _logger;
         private readonly HttpClient _httpClient;
         public IEnumerable<PhoneBook> Notes { get; set; }
         public IndexModel(HttpClient httpClient)
         {
             _httpClient = httpClient;
         }
-
         public void OnGet()
-        {
-            
-           Notes =  _httpClient.GetFromJsonAsync<List<PhoneBook>>("webapi/PhoneBooks").Result;
-           
+        {                
+           Notes =  _httpClient?.GetFromJsonAsync<List<PhoneBook>>("webapi/PhoneBooks").Result;           
         }
     }
 }
