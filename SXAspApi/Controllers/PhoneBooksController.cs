@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SharedLibPhoneBook;
 using SXAspApi.Models;
 using SXAspApi.Services;
 
@@ -8,15 +9,15 @@ namespace SXAspApi.Controllers
 {
     [Route("webapi/[controller]")]
     [ApiController]
-    public class PhoneBooks : ControllerBase
+    public class PhoneBooksController : ControllerBase
     {
         private IPhoneBookService _phoneBookService;
-        public PhoneBooks(IPhoneBookService phoneBookService)
+        public PhoneBooksController(IPhoneBookService phoneBookService)
         { 
             _phoneBookService = phoneBookService;
         }
         //[HttpGet]
         //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        public async Task<IEnumerable<PhoneBooks>> GetNotes() => await _phoneBookService.GetNotes();
+        public async Task<IEnumerable<PhoneBook>> GetNotes() => await _phoneBookService.GetNotes();
     }
 }

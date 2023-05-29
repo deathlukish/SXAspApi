@@ -4,16 +4,22 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 17.4.33213.308
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SXAspApi", "SXAspApi\SXAspApi.csproj", "{A24C28E9-C79A-422F-B0B5-95A678DCAD0A}"
+	ProjectSection(ProjectDependencies) = postProject
+		{07DEBFE1-DC35-432F-964C-362561053735} = {07DEBFE1-DC35-432F-964C-362561053735}
+	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SXWebClient", "SXWebClient\SXWebClient.csproj", "{14D36B8B-1B8C-4D34-A368-6FD9748D745B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SXWebClient", "SXWebClient\SXWebClient.csproj", "{14D36B8B-1B8C-4D34-A368-6FD9748D745B}"
+	ProjectSection(ProjectDependencies) = postProject
+		{07DEBFE1-DC35-432F-964C-362561053735} = {07DEBFE1-DC35-432F-964C-362561053735}
+		{A24C28E9-C79A-422F-B0B5-95A678DCAD0A} = {A24C28E9-C79A-422F-B0B5-95A678DCAD0A}
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SXDesktopClient", "SXDesctopClient\SXDesktopClient.csproj", "{469FD83E-5211-4097-BDE0-8BDC9FCCEDEE}"
 	ProjectSection(ProjectDependencies) = postProject
 		{A24C28E9-C79A-422F-B0B5-95A678DCAD0A} = {A24C28E9-C79A-422F-B0B5-95A678DCAD0A}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SXDesktopClient", "SXDesctopClient\SXDesktopClient.csproj", "{469FD83E-5211-4097-BDE0-8BDC9FCCEDEE}"
-	ProjectSection(ProjectDependencies) = postProject
-		{A24C28E9-C79A-422F-B0B5-95A678DCAD0A} = {A24C28E9-C79A-422F-B0B5-95A678DCAD0A}
-	EndProjectSection
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharedLibPhoneBook", "SharedLibPhoneBook\SharedLibPhoneBook.csproj", "{07DEBFE1-DC35-432F-964C-362561053735}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +39,10 @@ Global
 		{469FD83E-5211-4097-BDE0-8BDC9FCCEDEE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{469FD83E-5211-4097-BDE0-8BDC9FCCEDEE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{469FD83E-5211-4097-BDE0-8BDC9FCCEDEE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{07DEBFE1-DC35-432F-964C-362561053735}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{07DEBFE1-DC35-432F-964C-362561053735}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{07DEBFE1-DC35-432F-964C-362561053735}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{07DEBFE1-DC35-432F-964C-362561053735}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

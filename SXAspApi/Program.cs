@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using SXAspApi.Controllers;
 using SXAspApi.Models;
@@ -10,11 +11,9 @@ using System.Security.Claims;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
-
 // Add services to the container.
 var connection = builder.Configuration.GetConnectionString("PhoneConnectionString");
 var identityCon = builder.Configuration.GetConnectionString("IdentityConnectionString");
-
 builder.Services.AddControllers();
 
 builder.Services.AddDbContext<PhoneBookContext>(options => options.UseSqlServer(connection));
@@ -66,7 +65,7 @@ builder.Services.AddAuthentication(opts =>
         }
     };
 });
-builder.Services.AddScoped<IPhoneBookService, IPhone>();
+builder.Services.AddScoped<IPhoneBookService, Phones>();
 var app = builder.Build();
 SeedData.CreateMigrationBase(app);
 // Configure the HTTP request pipeline.

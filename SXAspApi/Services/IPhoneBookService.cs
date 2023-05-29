@@ -1,14 +1,15 @@
-﻿using SXAspApi.Controllers;
+﻿using SharedLibPhoneBook;
+using SXAspApi.Controllers;
 using SXAspApi.Models;
 
 namespace SXAspApi.Services
 {
     public interface IPhoneBookService
     {
-        Task<IEnumerable<PhoneBooks>> GetNotes();
-        Task AddNote(PhoneBooks note);
+        Task<IEnumerable<PhoneBook>> GetNotes();
+        Task AddNote(PhoneBook note);
         Task DeleteNote(int id);
-        Task EditNote(PhoneBooks note);
+        Task EditNote(PhoneBook note);
 
     }
 }

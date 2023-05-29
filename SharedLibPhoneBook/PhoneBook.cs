@@ -1,4 +1,4 @@
-﻿namespace SXAspApi.Models
+﻿namespace SharedLibPhoneBook
 {
     public class PhoneBook
     {
