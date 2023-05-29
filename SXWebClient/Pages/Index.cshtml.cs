@@ -12,9 +12,25 @@ namespace SXWebClient.Pages
         {
             _httpClient = httpClient;
         }
-        public void OnGet()
-        {                
-           Notes =  _httpClient?.GetFromJsonAsync<List<PhoneBook>>("webapi/PhoneBooks").Result;           
+        public async Task<IActionResult> OnGetAsync()
+        {
+            try
+            {
+                Notes = await _httpClient?.GetFromJsonAsync<List<PhoneBook>>("webapi/PhoneBooks");
+            }
+            catch (Exception ex) 
+            {
+            return BadRequest(ex.Message);
+            }
+            finally 
+            { 
+            _httpClient?.Dispose();
+            }
+            if (Notes == null)
+            { 
+            return NotFound();
+            }
+            return Page();
         }
     }
 }
