@@ -42,17 +42,20 @@ namespace SXAspApi.Models
                 await manager.AddToRoleAsync(user, "admin");
             }
             var books = app.ApplicationServices.CreateScope().ServiceProvider.GetRequiredService<PhoneBookContext>();
-            books.Notes.Add(new SharedLibPhoneBook.PhoneBook()
+            if (!books.Notes.Any())
             {
-                FirsName = "1",
-                MiddleName = "2",
-                LastName = "3",
-                Adres = "4",
-                Description = "5",
-                Phone = "6"
+                books.Notes.Add(new SharedLibPhoneBook.PhoneBook()
+                {
+                    FirsName = "Иван",
+                    MiddleName = "Иванович",
+                    LastName = "Иванов",
+                    Adres = "Москва",
+                    Description = "первая запись",
+                    Phone = "-79999999999"
+                }
+                );
+                books.SaveChanges();
             }
-            );
-            books.SaveChanges();
         }
     }
 }
