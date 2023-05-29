@@ -68,13 +68,8 @@ namespace SXAspApi.Models
                 {
                     FirsName = "Сидр",
                     MiddleName = "Сидорович",
-                    LastName = "Сидоров",
-                    DetailBook = new SharedLibPhoneBook.DetailBook() 
-                    {
-                    Adres = "vjcrjd",
-                    Description = "sds",
-                    Phone = "asdas"
-                    }
+                    LastName = "Сидоров"
+                   
                     //Adres = "Мухосранск",
                     //Description = "третья запись",
                     //Phone = "-79999999979"
