@@ -8,7 +8,7 @@ namespace SXWebClient.Pages
     {
         private readonly ILogger<IndexModel> _logger;
         private readonly HttpClient _httpClient;
-
+        public IEnumerable<PhoneBook> Notes { get; set; }
         public IndexModel(HttpClient httpClient)
         {
             _httpClient = httpClient;
@@ -17,7 +17,7 @@ namespace SXWebClient.Pages
         public void OnGet()
         {
             
-           var kkms =  _httpClient.GetFromJsonAsync<List<PhoneBook>>("webapi/PhoneBooks").Result;
+           Notes =  _httpClient.GetFromJsonAsync<List<PhoneBook>>("webapi/PhoneBooks").Result;
            
         }
     }
