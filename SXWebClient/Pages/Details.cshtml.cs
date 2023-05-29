@@ -1,15 +1,16 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using System.Net.Http;
 using SharedLibPhoneBook;
+using System.Net.Http;
+
 namespace SXWebClient.Pages
 {
-    public class IndexModel : PageModel
+    public class DetailsModel : PageModel
     {
         private readonly HttpClient _httpClient;
+        public PhoneBook DatailNote { get; set; }
         public string Error { get; set; }
-        public IEnumerable<PhoneBook> Notes { get; set; }
-        public IndexModel(HttpClient httpClient)
+        public DetailsModel(HttpClient httpClient)
         {
             _httpClient = httpClient;
         }
@@ -17,16 +18,16 @@ namespace SXWebClient.Pages
         {
             try
             {
-                Notes = await _httpClient?.GetFromJsonAsync<List<PhoneBook>>("webapi/PhoneBooks");
+                DatailNote = await _httpClient?.GetFromJsonAsync<PhoneBook>("webapi/PhoneBooks");
             }
-            catch (Exception ex) 
+            catch (Exception ex)
             {
-            Error = ex.Message;
-            Notes = new List<PhoneBook>();
+                Error = ex.Message;
+                DatailNote = new PhoneBook();
             }
-            finally 
-            { 
-            _httpClient?.Dispose();
+            finally
+            {
+                _httpClient?.Dispose();
             }
             //if (Notes == null)
             //{ 
@@ -36,3 +37,4 @@ namespace SXWebClient.Pages
         }
     }
 }
+

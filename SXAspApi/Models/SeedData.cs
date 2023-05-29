@@ -44,34 +44,40 @@ namespace SXAspApi.Models
             var books = app.ApplicationServices.CreateScope().ServiceProvider.GetRequiredService<PhoneBookContext>();
             if (!books.Notes.Any())
             {
-                books.Notes.Add(new SharedLibPhoneBook.PhoneBook()
-                {
-                    FirsName = "Иван",
-                    MiddleName = "Иванович",
-                    LastName = "Иванов",
-                    Adres = "Москва",
-                    Description = "первая запись",
-                    Phone = "+79999999999"
-                }
-                );
-                books.Notes.Add(new SharedLibPhoneBook.PhoneBook()
-                {
-                    FirsName = "Петр",
-                    MiddleName = "Петрович",
-                    LastName = "Петвов",
-                    Adres = "СПб",
-                    Description = "вторая запись",
-                    Phone = "+79999999998"
-                }
-                );
+                //books.Notes.Add(new SharedLibPhoneBook.PhoneBook()
+                //{
+                //    FirsName = "Иван",
+                //    MiddleName = "Иванович",
+                //    LastName = "Иванов",
+                //    //Adres = "Москва",
+                //    //Description = "первая запись",
+                //    //Phone = "+79999999999"
+                //}
+                //);
+                //books.Notes.Add(new SharedLibPhoneBook.PhoneBook()
+                //{
+                //    FirsName = "Петр",
+                //    MiddleName = "Петрович",
+                //    LastName = "Петвов",
+                //    //Adres = "СПб",
+                //    //Description = "вторая запись",
+                //    //Phone = "+79999999998"
+                //}
+                //);
                 books.Notes.Add(new SharedLibPhoneBook.PhoneBook()
                 {
                     FirsName = "Сидр",
                     MiddleName = "Сидорович",
                     LastName = "Сидоров",
-                    Adres = "Мухосранск",
-                    Description = "третья запись",
-                    Phone = "-79999999979"
+                    DetailBook = new SharedLibPhoneBook.DetailBook() 
+                    {
+                    Adres = "vjcrjd",
+                    Description = "sds",
+                    Phone = "asdas"
+                    }
+                    //Adres = "Мухосранск",
+                    //Description = "третья запись",
+                    //Phone = "-79999999979"
                 }
                 );
                 books.SaveChanges();

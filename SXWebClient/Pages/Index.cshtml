@@ -3,6 +3,10 @@
 @{
     ViewData["Title"] = "Телефонная книга";
 }
+@if (Model.Error is not null)
+{
+    <p style="color:red">@Model.Error</p>
+}
 <table class="table">
     <thead>
         <tr>
@@ -23,7 +27,7 @@
             <td>@item.LastName</td>
             <td>
                 <a asp-page="./Edit" asp-route-id="@item">Редактировать</a> |
-                <a asp-page="./Details" asp-route-id="@item">Детали</a> |
+                <a asp-page="./Details" asp-route-id="@item.Id">Детали</a> |
                 <a asp-page="./Delete" asp-route-id="@item">Удалить</a>
             </td>
           </tr>

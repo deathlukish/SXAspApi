@@ -11,7 +11,7 @@ using SXAspApi.Models;
 namespace SXAspApi.Migrations.PhoneBook
 {
     [DbContext(typeof(PhoneBookContext))]
-    [Migration("20230527182010_PhoneBook")]
+    [Migration("20230529114519_PhoneBook")]
     partial class PhoneBook
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -23,7 +23,7 @@ namespace SXAspApi.Migrations.PhoneBook
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
-            modelBuilder.Entity("SXAspApi.Models.PhoneBook", b =>
+            modelBuilder.Entity("SharedLibPhoneBook.DetailBook", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -39,6 +39,26 @@ namespace SXAspApi.Migrations.PhoneBook
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Phone")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Details");
+                });
+
+            modelBuilder.Entity("SharedLibPhoneBook.PhoneBook", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("DetailBookId")
+                        .HasColumnType("int");
+
                     b.Property<string>("FirsName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -51,13 +71,22 @@ namespace SXAspApi.Migrations.PhoneBook
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Phone")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.HasKey("Id");
 
+                    b.HasIndex("DetailBookId");
+
                     b.ToTable("Notes");
+                });
+
+            modelBuilder.Entity("SharedLibPhoneBook.PhoneBook", b =>
+                {
+                    b.HasOne("SharedLibPhoneBook.DetailBook", "DetailBook")
+                        .WithMany()
+                        .HasForeignKey("DetailBookId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("DetailBook");
                 });
 #pragma warning restore 612, 618
         }
