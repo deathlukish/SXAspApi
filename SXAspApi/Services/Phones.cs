@@ -15,15 +15,13 @@ namespace SXAspApi.Services
         public Task AddNote(PhoneBook note)
         {
             throw new NotImplementedException();
-        }
-        
+        }       
         public async Task DeleteNote(int id)
         {
-             _dbContext.Notes.Remove(_dbContext.Notes.First(x => x.Id == id));
+             _dbContext.Notes.Remove(_dbContext?.Notes?.FirstOrDefault(x => x.Id == id));
             await _dbContext.SaveChangesAsync();
             
         }
-
         public Task EditNote(PhoneBook note)
         {
             throw new NotImplementedException();

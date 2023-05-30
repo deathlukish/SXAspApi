@@ -16,7 +16,12 @@ namespace SXAspApi.Controllers
         {
             _phoneBookService = phoneBookService;
         }
-        public async Task<IEnumerable<PhoneBook>> GetNotes() => await _phoneBookService.GetNotes();
+        public async Task<IActionResult> GetNotes()
+        {
+           
+            return Ok(await _phoneBookService.GetNotes());
+
+        }
         [HttpDelete("{id:int}")]
         public async Task<IActionResult> DeleteNote(int id)
         {
