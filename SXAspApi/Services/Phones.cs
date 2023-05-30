@@ -22,10 +22,17 @@ namespace SXAspApi.Services
              _dbContext.Notes.Remove(_dbContext?.Notes?.FirstOrDefault(x => x.Id == id));
             await _dbContext.SaveChangesAsync();           
         }
+
         public Task EditNote(PhoneBook note)
         {
             throw new NotImplementedException();
         }
+
+        public async Task<PhoneBook> GetNoteById(int id)
+        {
+            return _dbContext.Notes.FirstOrDefault(x => x.Id == id);
+        }
+
         public async Task<IEnumerable<PhoneBook>> GetNotes() => _dbContext.Notes;
 
     }

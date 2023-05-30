@@ -10,6 +10,7 @@ namespace SXAspApi.Services
         Task AddNote(PhoneBook note);
         Task DeleteNote(int id);
         Task EditNote(PhoneBook note);
+        Task<PhoneBook> GetNoteById(int id);
 
     }
 }

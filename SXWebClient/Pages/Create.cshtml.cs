@@ -15,10 +15,7 @@ namespace SXWebClient.Pages
         }
         [BindProperty]
         public PhoneBook PhoneBook { get; set; } = new();
-        public void OnGet()
-        {
-        }
-        public async Task OnPost()
+        public async Task OnPostAsync()
         {
             var myContent = JsonSerializer.Serialize(PhoneBook);
             var buffer = System.Text.Encoding.UTF8.GetBytes(myContent);

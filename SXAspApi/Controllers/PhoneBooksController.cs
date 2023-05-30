@@ -40,5 +40,18 @@ namespace SXAspApi.Controllers
             await _phoneBookService.AddNote(note);
             return Ok();
         }
+        [HttpGet("{id:int}")]
+        public async Task<IActionResult> GetNoteById(int id)
+        {
+            try
+            {
+                return Ok(await _phoneBookService.GetNoteById(id));
+            }
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
+
+        }
     }
 }
