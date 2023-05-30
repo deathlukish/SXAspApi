@@ -18,14 +18,26 @@ namespace SXAspApi.Controllers
         }
         public async Task<IActionResult> GetNotes()
         {
-           
-            return Ok(await _phoneBookService.GetNotes());
+            try
+            {
+                return Ok(await _phoneBookService.GetNotes());
+            }
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }            
 
         }
         [HttpDelete("{id:int}")]
         public async Task<IActionResult> DeleteNote(int id)
         {
             await _phoneBookService.DeleteNote(id);
+            return Ok();
+        }
+        [HttpPost]
+        public async Task<IActionResult> AddNote([FromBody] PhoneBook note)
+        {
+            await _phoneBookService.AddNote(note);
             return Ok();
         }
     }

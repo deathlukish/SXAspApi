@@ -19,7 +19,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SXDesktopClient", "SXDescto
 		{A24C28E9-C79A-422F-B0B5-95A678DCAD0A} = {A24C28E9-C79A-422F-B0B5-95A678DCAD0A}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharedLibPhoneBook", "SharedLibPhoneBook\SharedLibPhoneBook.csproj", "{07DEBFE1-DC35-432F-964C-362561053735}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SharedLibPhoneBook", "SharedLibPhoneBook\SharedLibPhoneBook.csproj", "{07DEBFE1-DC35-432F-964C-362561053735}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
