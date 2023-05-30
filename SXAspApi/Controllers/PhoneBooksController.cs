@@ -13,9 +13,15 @@ namespace SXAspApi.Controllers
     {
         private IPhoneBookService _phoneBookService;
         public PhoneBooksController(IPhoneBookService phoneBookService)
-        { 
+        {
             _phoneBookService = phoneBookService;
         }
         public async Task<IEnumerable<PhoneBook>> GetNotes() => await _phoneBookService.GetNotes();
+        [HttpDelete("{id:int}")]
+        public async Task<IActionResult> DeleteNote(int id)
+        {
+            await _phoneBookService.DeleteNote(id);
+            return Ok();
+        }
     }
 }

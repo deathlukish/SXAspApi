@@ -1,4 +1,5 @@
-﻿using SharedLibPhoneBook;
+﻿using Microsoft.AspNetCore.Mvc;
+using SharedLibPhoneBook;
 using SXAspApi.Controllers;
 using SXAspApi.Models;
 
@@ -15,10 +16,12 @@ namespace SXAspApi.Services
         {
             throw new NotImplementedException();
         }
-
-        public Task DeleteNote(int id)
+        
+        public async Task DeleteNote(int id)
         {
-            throw new NotImplementedException();
+             _dbContext.Notes.Remove(_dbContext.Notes.First(x => x.Id == id));
+            await _dbContext.SaveChangesAsync();
+            
         }
 
         public Task EditNote(PhoneBook note)
