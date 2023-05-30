@@ -31,15 +31,12 @@ namespace SXAspApi.Migrations.PhoneBook
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int?>("Id"), 1L, 1);
 
                     b.Property<string>("Adres")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Phone")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -55,7 +52,7 @@ namespace SXAspApi.Migrations.PhoneBook
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int>("DetailBookId")
+                    b.Property<int?>("DetailBookId")
                         .HasColumnType("int");
 
                     b.Property<string>("FirsName")
@@ -81,9 +78,7 @@ namespace SXAspApi.Migrations.PhoneBook
                 {
                     b.HasOne("SharedLibPhoneBook.DetailBook", "DetailBook")
                         .WithMany()
-                        .HasForeignKey("DetailBookId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("DetailBookId");
 
                     b.Navigation("DetailBook");
                 });
