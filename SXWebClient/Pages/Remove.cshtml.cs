@@ -30,5 +30,14 @@ namespace SXWebClient.Pages
             return Page();
            
         }
+        public async Task<IActionResult> OnPostDeleteAsync(int id)
+        {
+            var a = await _httpClient.DeleteAsync($"webapi/PhoneBooks/{id}");
+            if (a.IsSuccessStatusCode)
+            {
+                return RedirectToPage();
+            }
+            return RedirectToPage();
+        }
     }
 }

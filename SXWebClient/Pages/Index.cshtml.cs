@@ -14,12 +14,8 @@ namespace SXWebClient.Pages
         {
             _httpClient = httpClient;
         }
-        public async Task<IActionResult> OnGetAsync(bool? saveChangesError = false)
-        {
-            if (saveChangesError.GetValueOrDefault())
-            {
-                Error = "Delete  failed. Try again";
-            }
+        public async Task<IActionResult> OnGetAsync()
+        {            
             try
             {
                 Notes = await _httpClient?.GetFromJsonAsync<List<PhoneBook>>("webapi/PhoneBooks");
@@ -35,14 +31,6 @@ namespace SXWebClient.Pages
             }
             return Page();
         }
-        public async Task<IActionResult> OnPostDeleteAsync(int id)
-        {
-            var a =  await _httpClient.DeleteAsync($"webapi/PhoneBooks/{200}");
-            if (a.IsSuccessStatusCode)
-            {
-               return RedirectToPage();            
-            }
-            return RedirectToPage();
-        }
+        
     }
 }
