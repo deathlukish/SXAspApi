@@ -15,13 +15,18 @@ namespace SXWebClient.Pages
         }
         [BindProperty]
         public PhoneBook PhoneBook { get; set; } = new();
-        public async Task OnPostAsync()
+        public async Task<IActionResult> OnPostAsync()
         {
+            if (!ModelState.IsValid)
+            {
+                return Page();
+            }
             var myContent = JsonSerializer.Serialize(PhoneBook);
             var buffer = System.Text.Encoding.UTF8.GetBytes(myContent);
             var byteContent = new ByteArrayContent(buffer);
             byteContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
             await _httpClient.PostAsync("webapi/PhoneBooks", byteContent);
+            return RedirectToPage("./Index");
         }
     }
 }

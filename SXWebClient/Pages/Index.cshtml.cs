@@ -9,12 +9,17 @@ namespace SXWebClient.Pages
         private readonly HttpClient _httpClient;
         public string Error { get; set; }
         public IEnumerable<PhoneBook> Notes { get; set; }
+        public string ErrorMessage { get; set; }
         public IndexModel(HttpClient httpClient)
         {
             _httpClient = httpClient;
         }
-        public async Task<IActionResult> OnGetAsync()
+        public async Task<IActionResult> OnGetAsync(bool? saveChangesError = false)
         {
+            if (saveChangesError.GetValueOrDefault())
+            {
+                Error = "Delete  failed. Try again";
+            }
             try
             {
                 Notes = await _httpClient?.GetFromJsonAsync<List<PhoneBook>>("webapi/PhoneBooks");
@@ -28,15 +33,15 @@ namespace SXWebClient.Pages
             { 
             _httpClient?.Dispose();
             }
-            //if (Notes == null)
-            //{ 
-            //return NotFound();
-            //}
             return Page();
         }
         public async Task<IActionResult> OnPostDeleteAsync(int id)
         {
-            await _httpClient.DeleteAsync($"webapi/PhoneBooks/{id}");
+            var a =  await _httpClient.DeleteAsync($"webapi/PhoneBooks/{200}");
+            if (a.IsSuccessStatusCode)
+            {
+               return RedirectToPage();            
+            }
             return RedirectToPage();
         }
     }

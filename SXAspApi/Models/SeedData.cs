@@ -48,8 +48,7 @@ namespace SXAspApi.Models
                 {
                     FirsName = "Иван",
                     MiddleName = "Иванович",
-                    LastName = "Иванов"
-                 
+                    LastName = "Иванов"                 
                 }
                 );
                 books.Notes.Add(new SharedLibPhoneBook.PhoneBook()
@@ -66,7 +65,6 @@ namespace SXAspApi.Models
                     MiddleName = "Сидорович",
                     LastName = "Сидоров",
                     DetailBook = new()
-
                 }
                 );
                 books.SaveChanges();

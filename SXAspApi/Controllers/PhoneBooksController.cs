@@ -45,7 +45,15 @@ namespace SXAspApi.Controllers
         {
             try
             {
-                return Ok(await _phoneBookService.GetNoteById(id));
+                var note = await _phoneBookService.GetNoteById(id);
+                if (note == null)
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    return Ok(await _phoneBookService.GetNoteById(id));
+                }
             }
             catch (Exception)
             {
