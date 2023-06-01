@@ -39,5 +39,10 @@ namespace SXWebClient.Controllers
             PhoneBook = await _httpClient.GetFromJsonAsync<PhoneBook>($"webapi/PhoneBooks/{id}");
             return View(PhoneBook);
         }
+        public async Task<IActionResult> Remove(int id)
+        { 
+        return View(await _httpClient.GetFromJsonAsync<PhoneBook>($"webapi/PhoneBooks/{id}"));
+        }
+
     }
 }
