@@ -1,5 +1,5 @@
 ﻿@page
-@model SXWebClient.Pages.EditModel
+@model SharedLibPhoneBook.PhoneBook
 @{
     <h1>Новая запись</h1>
     <hr />
@@ -7,21 +7,21 @@
         <div class="col-md-4">
             <form method="post">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                <input type="hidden" asp-for="PhoneBook!.Id" />
+                <input type="hidden" asp-for="Id" />
                 <div class="form-group">
-                    <label asp-for="PhoneBook!.FirsName" class="control-label"></label>
-                    <input asp-for="PhoneBook!.FirsName" class="form-control" />
-                    <span asp-validation-for="PhoneBook!.FirsName" class="text-danger"></span>
+                    <label asp-for="FirsName" class="control-label"></label>
+                    <input asp-for="FirsName" class="form-control" />
+                    <span asp-validation-for="FirsName" class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                    <label asp-for="PhoneBook!.MiddleName" class="control-label"></label>
-                    <input asp-for="PhoneBook!.MiddleName" class="form-control" />
-                    <span asp-validation-for="PhoneBook!.MiddleName" class="text-danger"></span>
+                    <label asp-for="MiddleName" class="control-label"></label>
+                    <input asp-for="MiddleName" class="form-control" />
+                    <span asp-validation-for="MiddleName" class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                    <label asp-for="PhoneBook!.LastName" class="control-label"></label>
-                    <input asp-for="PhoneBook!.LastName" class="form-control" />
-                    <span asp-validation-for="PhoneBook!.LastName" class="text-danger"></span>
+                    <label asp-for="LastName" class="control-label"></label>
+                    <input asp-for="LastName" class="form-control" />
+                    <span asp-validation-for="LastName" class="text-danger"></span>
                 </div>
                 <div class="form-group">
                     <input type="submit" value="Сохранить" class="btn btn-primary" />
