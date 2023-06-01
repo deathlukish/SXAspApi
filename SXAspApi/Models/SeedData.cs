@@ -56,15 +56,16 @@ namespace SXAspApi.Models
                     FirsName = "Петр",
                     MiddleName = "Петрович",
                     LastName = "Петвов",
-                    DetailBook = new() { Adres = "Moscow", Description = "new"}
+                    Phone ="+79999999999"
+                    
                 }
                 );
                 books.Notes.Add(new SharedLibPhoneBook.PhoneBook()
                 {
                     FirsName = "Сидр",
                     MiddleName = "Сидорович",
-                    LastName = "Сидоров",
-                    DetailBook = new()
+                    LastName = "Сидоров"
+                    
                 }
                 );
                 books.SaveChanges();
