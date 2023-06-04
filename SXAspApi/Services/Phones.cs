@@ -12,7 +12,7 @@ namespace SXAspApi.Services
         {
             _dbContext = context;
         }
-        public async Task AddNote(PhoneBook note)
+        public async Task AddNote(PhoneBookDetail note)
         {
            await _dbContext.AddAsync(note);
            await _dbContext.SaveChangesAsync();
@@ -23,14 +23,15 @@ namespace SXAspApi.Services
             await _dbContext.SaveChangesAsync();           
         }
 
-        public Task EditNote(PhoneBook note)
+        public Task EditNote(PhoneBookDetail note)
         {
             throw new NotImplementedException();
         }
 
-        public async Task<PhoneBook> GetNoteById(int id)
+        public async Task<PhoneBookDetail> GetNoteById(int id)
         {
-            return _dbContext.Notes.FirstOrDefault(x => x.Id == id);
+            var a = _dbContext.Notes.FirstOrDefault(x => x.Id == id);
+            return a == null ? null : new PhoneBookDetail();
         }
 
         public async Task<IEnumerable<PhoneBook>> GetNotes() => _dbContext.Notes;

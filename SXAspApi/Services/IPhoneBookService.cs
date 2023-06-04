@@ -7,10 +7,10 @@ namespace SXAspApi.Services
     public interface IPhoneBookService
     {
         Task<IEnumerable<PhoneBook>> GetNotes();
-        Task AddNote(PhoneBook note);
+        Task AddNote(PhoneBookDetail note);
         Task DeleteNote(int id);
-        Task EditNote(PhoneBook note);
-        Task<PhoneBook> GetNoteById(int id);
+        Task EditNote(PhoneBookDetail note);
+        Task<PhoneBookDetail> GetNoteById(int id);
 
     }
 }

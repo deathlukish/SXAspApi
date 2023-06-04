@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SharedLibPhoneBook;
-using SXAspApi.Models;
 using SXAspApi.Services;
 
 namespace SXAspApi.Controllers
@@ -35,7 +34,7 @@ namespace SXAspApi.Controllers
             return Ok();
         }
         [HttpPost]
-        public async Task<IActionResult> AddNote([FromBody] PhoneBook note)
+        public async Task<IActionResult> AddNote([FromBody] PhoneBookDetail note)
         {
             await _phoneBookService.AddNote(note);
             return Ok();
@@ -48,7 +47,7 @@ namespace SXAspApi.Controllers
                 var note = await _phoneBookService.GetNoteById(id);
                 if (note == null)
                 {
-                    return NotFound();
+                    return Ok();
                 }
                 else
                 {

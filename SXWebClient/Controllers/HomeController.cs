@@ -8,7 +8,7 @@ namespace SXWebClient.Controllers
     {
         public IEnumerable<PhoneBook> Notes { get; set; }
         private readonly HttpClient _httpClient;
-        public PhoneBook PhoneBook { get; set; } = new();
+        public PhoneBookDetail PhoneBook { get; set; } = new();
         public HomeController(HttpClient httpClient)
         {
             _httpClient = httpClient;
@@ -36,13 +36,17 @@ namespace SXWebClient.Controllers
         }
         public async Task<IActionResult> Edit(int? id)
         {
-            PhoneBook = await _httpClient.GetFromJsonAsync<PhoneBook>($"webapi/PhoneBooks/{id}");
+            PhoneBook = await _httpClient.GetFromJsonAsync<PhoneBookDetail>($"webapi/PhoneBooks/{id}");
             return View(PhoneBook);
         }
         public async Task<IActionResult> Remove(int id)
         { 
-        return View(await _httpClient.GetFromJsonAsync<PhoneBook>($"webapi/PhoneBooks/{id}"));
+        return View(await _httpClient.GetFromJsonAsync<PhoneBookDetail>($"webapi/PhoneBooks/{id}"));
         }
-
+        public async Task<IActionResult> Details(int? id)
+        {
+            PhoneBook = await _httpClient.GetFromJsonAsync<PhoneBookDetail>($"webapi/PhoneBooks/{id}");
+            return View(PhoneBook);
+        }
     }
 }

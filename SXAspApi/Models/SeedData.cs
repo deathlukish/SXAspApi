@@ -44,14 +44,14 @@ namespace SXAspApi.Models
             var books = app.ApplicationServices.CreateScope().ServiceProvider.GetRequiredService<PhoneBookContext>();
             if (!books.Notes.Any())
             {
-                books.Notes.Add(new SharedLibPhoneBook.PhoneBook()
+                books.Notes.Add(new SharedLibPhoneBook.PhoneBookDetail()
                 {
                     FirsName = "Иван",
                     MiddleName = "Иванович",
                     LastName = "Иванов"                 
                 }
                 );
-                books.Notes.Add(new SharedLibPhoneBook.PhoneBook()
+                books.Notes.Add(new SharedLibPhoneBook.PhoneBookDetail()
                 {
                     FirsName = "Петр",
                     MiddleName = "Петрович",
@@ -60,7 +60,7 @@ namespace SXAspApi.Models
                     
                 }
                 );
-                books.Notes.Add(new SharedLibPhoneBook.PhoneBook()
+                books.Notes.Add(new SharedLibPhoneBook.PhoneBookDetail()
                 {
                     FirsName = "Сидр",
                     MiddleName = "Сидорович",
