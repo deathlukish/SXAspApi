@@ -48,5 +48,7 @@ namespace SXWebClient.Controllers
             PhoneBook = await _httpClient.GetFromJsonAsync<PhoneBookDetail>($"webapi/PhoneBooks/{id}");
             return View(PhoneBook);
         }
+        [HttpPost]
+        public string Edit(string name, int age) => $"{name}: {age}";
     }
 }

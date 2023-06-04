@@ -31,7 +31,7 @@ namespace SXAspApi.Services
         public async Task<PhoneBookDetail> GetNoteById(int id)
         {
             var a = _dbContext.Notes.FirstOrDefault(x => x.Id == id);
-            return a == null ? null : new PhoneBookDetail();
+            return a;
         }
 
         public async Task<IEnumerable<PhoneBook>> GetNotes() => _dbContext.Notes;

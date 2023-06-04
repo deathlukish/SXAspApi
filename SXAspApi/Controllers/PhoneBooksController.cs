@@ -30,7 +30,16 @@ namespace SXAspApi.Controllers
         [HttpDelete("{id:int}")]
         public async Task<IActionResult> DeleteNote(int id)
         {
-            await _phoneBookService.DeleteNote(id);
+            try
+            {
+                await _phoneBookService.DeleteNote(id);
+            }
+            catch (Exception)
+            {
+
+              StatusCode(StatusCodes.Status500InternalServerError);
+
+            }
             return Ok();
         }
         [HttpPost]
