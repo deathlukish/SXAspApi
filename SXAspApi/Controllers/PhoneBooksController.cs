@@ -47,7 +47,7 @@ namespace SXAspApi.Controllers
                 var note = await _phoneBookService.GetNoteById(id);
                 if (note == null)
                 {
-                    return Ok();
+                    return NotFound();
                 }
                 else
                 {
