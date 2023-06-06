@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SharedLibPhoneBook;
 using System.Net.Http;
+using System.Text.Json;
 
 namespace SXWebClient.Controllers
 {
@@ -59,9 +60,11 @@ namespace SXWebClient.Controllers
             return View();
         }
         [HttpPost]
-        public async Task<IActionResult> NewNote()
+        public async Task<IActionResult> Create(int id, [Bind("Id,FirstName,MiddleName,LastName,Phone,Description, Adres")] PhoneBookDetail note)
         {
-            return View();
+
+          await _httpClient.PostAsJsonAsync<PhoneBookDetail>("webapi/PhoneBooks", note);  
+          return Redirect("index");
         }
     }
 }
