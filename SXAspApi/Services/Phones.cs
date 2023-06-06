@@ -22,7 +22,6 @@ namespace SXAspApi.Services
              _dbContext.Notes.Remove(_dbContext?.Notes?.FirstOrDefault(x => x.Id == id));
             await _dbContext.SaveChangesAsync();           
         }
-
         public async Task EditNote(PhoneBookDetail note)
         {
             var a = _dbContext.Notes.FirstOrDefault(x => x.Id == note.Id);
@@ -37,14 +36,11 @@ namespace SXAspApi.Services
             }
             await _dbContext.SaveChangesAsync();
         }
-
         public async Task<PhoneBookDetail> GetNoteById(int id)
         {
             var a = _dbContext.Notes.FirstOrDefault(x => x.Id == id);
             return a;
         }
-
         public async Task<IEnumerable<PhoneBook>> GetNotes() => _dbContext.Notes;
-
     }
 }
