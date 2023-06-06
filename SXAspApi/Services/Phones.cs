@@ -23,9 +23,19 @@ namespace SXAspApi.Services
             await _dbContext.SaveChangesAsync();           
         }
 
-        public Task EditNote(PhoneBookDetail note)
+        public async Task EditNote(PhoneBookDetail note)
         {
-            throw new NotImplementedException();
+            var a = _dbContext.Notes.FirstOrDefault(x => x.Id == note.Id);
+            if (a != null) 
+            {
+                a.LastName = note.LastName;
+                a.FirstName = note.FirstName;
+                a.MiddleName = note.MiddleName;
+                a.Phone = note.Phone;
+                a.Description = note.Description;
+                a.Adres = note.Adres;
+            }
+            await _dbContext.SaveChangesAsync();
         }
 
         public async Task<PhoneBookDetail> GetNoteById(int id)

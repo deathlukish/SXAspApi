@@ -48,6 +48,12 @@ namespace SXAspApi.Controllers
             await _phoneBookService.AddNote(note);
             return Ok();
         }
+        [HttpPatch]
+        public async Task<IActionResult> EditNote([FromBody] PhoneBookDetail note)
+        {
+            await _phoneBookService.EditNote(note);
+            return Ok();
+        }
         [HttpGet("{id:int}")]
         public async Task<IActionResult> GetNoteById(int id)
         {

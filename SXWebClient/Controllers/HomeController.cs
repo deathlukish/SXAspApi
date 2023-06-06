@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SharedLibPhoneBook;
 using System.Net.Http;
+using System.Text;
 using System.Text.Json;
 
 namespace SXWebClient.Controllers
@@ -43,8 +44,10 @@ namespace SXWebClient.Controllers
         [HttpPost]
         public async Task<IActionResult> Edit(int id, [Bind("Id,FirstName,MiddleName,LastName,Phone,Description, Adres")] PhoneBookDetail note)
         {
-            var a = note;
-            return View();
+            var serialize = JsonSerializer.Serialize(note);
+            var requestContent = new StringContent(serialize, Encoding.UTF8, "application/json-patch+json");
+            await _httpClient.PatchAsync($"webapi/PhoneBooks/", requestContent);
+            return Ok();
         }
         public async Task<IActionResult> Remove(int id)
         { 
@@ -62,8 +65,7 @@ namespace SXWebClient.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(int id, [Bind("Id,FirstName,MiddleName,LastName,Phone,Description, Adres")] PhoneBookDetail note)
         {
-
-          await _httpClient.PostAsJsonAsync<PhoneBookDetail>("webapi/PhoneBooks", note);  
+          await _httpClient.PostAsJsonAsync("webapi/PhoneBooks", note);  
           return Redirect("index");
         }
     }
