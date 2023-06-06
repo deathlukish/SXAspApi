@@ -1,4 +1,27 @@
-﻿@model SharedLibPhoneBook.PhoneBook
+﻿@model SharedLibPhoneBook.PhoneBookDetail
 @{
     Layout = "_Layout";
+}
+@{
+    <h1>Детальная информация</h1>
+    <hr />
+    <div class="row">
+        <div class="col-md-4">
+            <label>Имя</label>
+            <label class="form-control">@Model.FirstName</label>
+            <label>Отчество</label>
+            <label class="form-control">@Model.MiddleName</label>
+            <label>Фамилия</label>
+            <label class="form-control">@Model.LastName</label>
+            <label>Телефон</label>
+            <label class="form-control">@Model.Phone</label>
+            <label>Адрес</label>
+            <label class="form-control">@Model.Adres</label>
+            <label>Описание</label>
+            <label class="form-control">@Model.Description</label>
+        </div>
+    </div>
+    <div>
+        <a asp-action="Index">К списку</a>
+    </div>
 }

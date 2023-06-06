@@ -7,55 +7,39 @@
     <hr />
     <div class="row">
             <div class="col-md-4">
-                <form method="post">
-                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <form asp-action ="Edit">
                     <input type="hidden" asp-for="Id" />
                     <div class="form-group">
-                        <label asp-for="FirsName" class="control-label"></label>
-                        <input asp-for="FirsName" class="form-control" />
-                        <span asp-validation-for="FirsName" class="text-danger"></span>
+                        <label>Имя</label>
+                        <input asp-for="FirstName" class="form-control" />
                     </div>
                     <div class="form-group">
-                        <label asp-for="MiddleName" class="control-label"></label>
+                        <label asp-for="MiddleName">Отчество</label>
                         <input asp-for="MiddleName" class="form-control" />
-                        <span asp-validation-for="MiddleName" class="text-danger"></span>
                     </div>
                     <div class="form-group">
-                        <label asp-for="LastName" class="control-label"></label>
+                        <label asp-for="LastName">Фамилия</label>
                         <input asp-for="LastName" class="form-control" />
-                        <span asp-validation-for="LastName" class="text-danger"></span>
                     </div>
                     <div class="form-group">
-                        <label asp-for="Phone" class="control-label"></label>
+                        <label asp-for="Phone">Телефон</label>
                         <input asp-for="Phone" class="form-control" />
-                        <span asp-validation-for="Phone" class="text-danger"></span>
                     </div>
                     <div class="form-group">
-                        <label asp-for="Adres" class="control-label"></label>
+                        <label asp-for="Adres">Адрес</label>
                         <input asp-for="Adres" class="form-control" />
-                        <span asp-validation-for="Adres" class="text-danger"></span>
                     </div>
                     <div class="form-group">
-                        <label asp-for="Description" class="control-label"></label>
+                        <label asp-for="Description">Описание</label>
                         <input asp-for="Description" class="form-control" />
-                        <span asp-validation-for="Description" class="text-danger"></span>
                     </div>
-                    <form method='post'>
                     <div class="form-group">
                         <input type="submit" value="Сохранить" class="btn btn-primary" />
                     </div>
-                    </form>
                 </form>
             </div>
     </div>
-
     <div>
-            <a asp-action="Index">Back to List</a>
-    </div>
-
-    @section Scripts {
-        @{
-            await Html.RenderPartialAsync("_ValidationScriptsPartial");
-        }
-    }
+            <a asp-action="Index">К списку</a>
+    </div>  
 }

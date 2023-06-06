@@ -1,0 +1,45 @@
+﻿@model SharedLibPhoneBook.PhoneBookDetail
+@{
+    Layout = "_Layout";
+}
+@{
+    <h1>Новая запись</h1>
+    <hr />
+    <div class="row">
+        <div class="col-md-4">
+            <form asp-action="NewNote">
+                <input type="hidden" asp-for="Id" />
+                <div class="form-group">
+                    <label>Имя</label>
+                    <input asp-for="FirstName" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label asp-for="MiddleName">Отчество</label>
+                    <input asp-for="MiddleName" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label asp-for="LastName">Фамилия</label>
+                    <input asp-for="LastName" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label asp-for="Phone">Телефон</label>
+                    <input asp-for="Phone" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label asp-for="Adres">Адрес</label>
+                    <input asp-for="Adres" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label asp-for="Description">Описание</label>
+                    <input asp-for="Description" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Сохранить" class="btn btn-primary" />
+                </div>
+            </form>
+        </div>
+    </div>
+    <div>
+        <a asp-action="Index">К списку</a>
+    </div>
+}

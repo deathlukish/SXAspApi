@@ -46,14 +46,14 @@ namespace SXAspApi.Models
             {
                 books.Notes.Add(new SharedLibPhoneBook.PhoneBookDetail()
                 {
-                    FirsName = "Иван",
+                    FirstName = "Иван",
                     MiddleName = "Иванович",
                     LastName = "Иванов"                 
                 }
                 );
                 books.Notes.Add(new SharedLibPhoneBook.PhoneBookDetail()
                 {
-                    FirsName = "Петр",
+                    FirstName = "Петр",
                     MiddleName = "Петрович",
                     LastName = "Петвов",
                     Phone ="+79999999999"
@@ -62,7 +62,7 @@ namespace SXAspApi.Models
                 );
                 books.Notes.Add(new SharedLibPhoneBook.PhoneBookDetail()
                 {
-                    FirsName = "Сидр",
+                    FirstName = "Сидр",
                     MiddleName = "Сидорович",
                     LastName = "Сидоров"
                     
