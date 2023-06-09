@@ -1,11 +1,29 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@model SharedLibPhoneBook.PhoneBook
+﻿@model SharedLibPhoneBook.PhoneBookDetail
 @{
-    @if (Model is not null)
-    {
-        <p style="color:red">@Model</p>
-    }
-    @Model?.FirstName
+    Layout = "_Layout";
+}
+@{
+    <h1>Удалить запись?</h1>
+    <hr />
+    <div class="row">
+            <div class="col-md-4">
+                <label>Имя</label>
+                <label class="form-control">@Model.FirstName</label>
+                <label>Отчество</label>
+                <label class="form-control">@Model.MiddleName</label>
+                <label>Фамилия</label>
+                <label class="form-control">@Model.LastName</label>
+                <label>Телефон</label>
+                <label class="form-control">@Model.Phone</label>
+                <label>Адрес</label>
+                <label class="form-control">@Model.Adres</label>
+                <label>Описание</label>
+                <label class="form-control">@Model.Description</label>
+            </div>
+    </div>
+    <div>
+        <form action="@Model.Id" method="post">
+             <input type="submit" value="Удалить"/>
+        </form>   
+    </div>
 }

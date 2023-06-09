@@ -24,7 +24,7 @@ namespace SXWebClient.Controllers
             catch (Exception ex)
             {
           
-                
+                return View("Error");
             }
             finally
             {
@@ -42,26 +42,27 @@ namespace SXWebClient.Controllers
             return View(PhoneBook);
         }
         [HttpPost]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,FirstName,MiddleName,LastName,Phone,Description, Adres")] PhoneBookDetail note)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,FirstName,MiddleName,LastName,Phone,Description,Adres")] PhoneBookDetail note)
         {
             var serialize = JsonSerializer.Serialize(note);
             var requestContent = new StringContent(serialize, Encoding.UTF8, "application/json-patch+json");
             await _httpClient.PatchAsync($"webapi/PhoneBooks/", requestContent);
-            return Ok();
+            return RedirectToAction("index");
         }
-        public async Task<IActionResult> Remove(int id)
-        { 
-        return View(await _httpClient.GetFromJsonAsync<PhoneBookDetail>($"webapi/PhoneBooks/{id}"));
+        public async Task<IActionResult> Remove(int id) => View(await _httpClient.GetFromJsonAsync<PhoneBookDetail>($"webapi/PhoneBooks/{id}"));
+        [HttpPost, ActionName("Remove")]
+        public async Task<IActionResult> Delete(int id)
+        {
+           await _httpClient.DeleteAsync($"webapi/PhoneBooks/{id}");
+            return RedirectToAction("index");
         }
         public async Task<IActionResult> Details(int? id)
         {
             PhoneBook = await _httpClient.GetFromJsonAsync<PhoneBookDetail>($"webapi/PhoneBooks/{id}");
             return View(PhoneBook);
         }
-        public async Task<IActionResult> Create()
-        {           
-            return View();
-        }
+        public async Task<IActionResult> Create() => View();
+        
         [HttpPost]
         public async Task<IActionResult> Create(int id, [Bind("Id,FirstName,MiddleName,LastName,Phone,Description, Adres")] PhoneBookDetail note)
         {
