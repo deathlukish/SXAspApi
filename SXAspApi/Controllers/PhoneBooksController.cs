@@ -37,7 +37,7 @@ namespace SXAspApi.Controllers
             catch (Exception)
             {
 
-              StatusCode(StatusCodes.Status500InternalServerError);
+              return StatusCode(StatusCodes.Status500InternalServerError);
 
             }
             return Ok();

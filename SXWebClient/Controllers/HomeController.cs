@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SharedLibPhoneBook;
-using System.Net.Http;
 using System.Text;
 using System.Text.Json;
 
@@ -22,9 +21,8 @@ namespace SXWebClient.Controllers
                 Notes = await _httpClient?.GetFromJsonAsync<List<PhoneBook>>("webapi/PhoneBooks");
             }
             catch (Exception ex)
-            {
-          
-                return View("Error");
+            {          
+                return View("Error", ex);
             }
             finally
             {
