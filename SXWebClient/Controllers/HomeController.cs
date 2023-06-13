@@ -79,7 +79,7 @@ namespace SXWebClient.Controllers
             return View("UserManager");
         }
         [HttpPost]
-        public ActionResult Users(User users)
+        public async Task<IActionResult> Users(User users)
         {
             if (ModelState.IsValid)
             {
@@ -95,6 +95,8 @@ namespace SXWebClient.Controllers
                     ViewBag.ErrorMessage = message;
                 }
             }
+            await _httpClient.PostAsJsonAsync("webapi/UserAuth", users);
+           
             return View("Auth",users);
         }
 

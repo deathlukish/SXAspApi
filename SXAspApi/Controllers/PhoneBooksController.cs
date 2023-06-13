@@ -78,6 +78,7 @@ namespace SXAspApi.Controllers
         [Authorize(Roles ="Admin")]
         public async Task<IActionResult> TestingAuth()
         {
+
            return Ok();
         }
     }
