@@ -74,6 +74,11 @@ namespace SXAspApi.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError);
             }
         }
-
+        [HttpGet("Test")]
+        [Authorize(Roles ="Admin")]
+        public async Task<IActionResult> TestingAuth()
+        {
+           return Ok();
+        }
     }
 }

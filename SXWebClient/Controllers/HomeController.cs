@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using SharedLibPhoneBook;
 using System.Text;
 using System.Text.Json;
@@ -7,7 +8,7 @@ namespace SXWebClient.Controllers
 {
     public class HomeController : Controller
     {
-        public IEnumerable<PhoneBook> Notes { get; set; }
+        public IEnumerable<PhoneBook>? Notes { get; set; }
         private readonly HttpClient _httpClient;
         public PhoneBookDetail PhoneBook { get; set; } = new();
         public HomeController(HttpClient httpClient)
@@ -18,10 +19,10 @@ namespace SXWebClient.Controllers
         {
             try
             {
-                Notes = await _httpClient?.GetFromJsonAsync<List<PhoneBook>>("webapi/PhoneBooks");
+                Notes = await _httpClient.GetFromJsonAsync<List<PhoneBook>>("webapi/PhoneBooks");
             }
             catch (Exception ex)
-            {          
+            {
                 return View("Error", ex);
             }
             finally
@@ -51,7 +52,7 @@ namespace SXWebClient.Controllers
         [HttpPost, ActionName("Remove")]
         public async Task<IActionResult> Delete(int id)
         {
-           await _httpClient.DeleteAsync($"webapi/PhoneBooks/{id}");
+            await _httpClient.DeleteAsync($"webapi/PhoneBooks/{id}");
             return RedirectToAction("index");
         }
         public async Task<IActionResult> Details(int? id)
@@ -60,12 +61,42 @@ namespace SXWebClient.Controllers
             return View(PhoneBook);
         }
         public async Task<IActionResult> Create() => View();
-        
+
         [HttpPost]
         public async Task<IActionResult> Create(int id, [Bind("Id,FirstName,MiddleName,LastName,Phone,Description, Adres")] PhoneBookDetail note)
         {
-          await _httpClient.PostAsJsonAsync("webapi/PhoneBooks", note);  
-          return Redirect("index");
+            await _httpClient.PostAsJsonAsync("webapi/PhoneBooks", note);
+            return Redirect("index");
         }
+        [HttpGet]
+        public async Task<IActionResult> Users()
+        { 
+            var a = await _httpClient.GetAsync("webapi/PhoneBooks/Test");
+            if (a.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+            {
+                return View("Auth");
+            }
+            return View("UserManager");
+        }
+        [HttpPost]
+        public ActionResult Users(User users)
+        {
+            if (ModelState.IsValid)
+            {
+                //message will collect the String value from the model method.
+                string message = "fds";
+                //RedirectToAction("actionName/ViewName_ActionResultMethodName", "ControllerName");
+                if (message.Equals("1"))
+                {
+
+                }
+                else
+                {
+                    ViewBag.ErrorMessage = message;
+                }
+            }
+            return View("Auth",users);
+        }
+
     }
 }
