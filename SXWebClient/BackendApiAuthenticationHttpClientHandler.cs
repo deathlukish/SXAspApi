@@ -15,17 +15,17 @@ namespace SXWebClient
 
         protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
-            var expat = await _accessor.HttpContext.GetTokenAsync("expires_at");
-            var dataExp = DateTime.Parse(expat, null, DateTimeStyles.RoundtripKind);
-            if ((dataExp - DateTime.Now).TotalMinutes < 10)
-            {
-                //SNIP GETTING A NEW TOKEN IF ITS ABOUT TO EXPIRE
-            }
+            //var expat = await _accessor.HttpContext.GetTokenAsync("expires_at");
+            //var dataExp = DateTime.Parse(expat, null, DateTimeStyles.RoundtripKind);
+            //if ((dataExp - DateTime.Now).TotalMinutes < 10)
+            //{
+            //    //SNIP GETTING A NEW TOKEN IF ITS ABOUT TO EXPIRE
+            //}
 
-            var token = await _accessor.HttpContext.GetTokenAsync("access_token");
+            //var token = await _accessor.HttpContext.GetTokenAsync("access_token");
 
-            // Use the token to make the call.
-            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            //// Use the token to make the call.
+            //request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
             return await base.SendAsync(request, cancellationToken);
         }
     }
