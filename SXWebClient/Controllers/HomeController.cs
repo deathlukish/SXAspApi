@@ -95,8 +95,8 @@ namespace SXWebClient.Controllers
                     ViewBag.ErrorMessage = message;
                 }
             }
-            await _httpClient.PostAsJsonAsync("webapi/UserAuth", users);
-           
+           var a =  await _httpClient.PostAsJsonAsync("webapi/UserAuth", users);
+          
             return View("Auth",users);
         }
 
