@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SharedLibPhoneBook;
+using SXWebClient.Services;
 using System.Net;
 using System.Text;
 using System.Text.Json;
@@ -11,16 +12,18 @@ namespace SXWebClient.Controllers
     {
         public IEnumerable<PhoneBook>? Notes { get; set; }
         private readonly HttpClient _httpClient;
+        private readonly IHomeService _homeService;
         public PhoneBookDetail PhoneBook { get; set; } = new();
-        public HomeController(HttpClient httpClient)
+        public HomeController(HttpClient httpClient, IHomeService homeService)
         {
             _httpClient = httpClient;
+            _homeService = homeService;
         }
         public async Task<IActionResult> Index()
         {
             try
             {
-                Notes = await _httpClient.GetFromJsonAsync<List<PhoneBook>>("webapi/PhoneBooks");
+                Notes = await _homeService.GetNotesFromApi();
             }
             catch (Exception ex)
             {
@@ -53,7 +56,7 @@ namespace SXWebClient.Controllers
         [HttpPost, ActionName("Remove")]
         public async Task<IActionResult> Delete(int id)
         {
-            await _httpClient.DeleteAsync($"webapi/PhoneBooks/{id}");
+            await _homeService.DeleteNoteFromApi(id);
             return RedirectToAction("index");
         }
         public async Task<IActionResult> Details(int? id)
