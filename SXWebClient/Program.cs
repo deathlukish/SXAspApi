@@ -10,14 +10,15 @@ namespace SXWebClient
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
-            // builder.Services.AddRazorPages();
             builder.Services.AddMvc();
             builder.Services.AddScoped(sp =>
             {            
                 HttpClientHandler clientHandler = new HttpClientHandler();
                 clientHandler.ServerCertificateCustomValidationCallback += (sender, cert, chain, sslPolicyErrors) => { return true; };
-                clientHandler.SslProtocols = SslProtocols.None;                
-                var client = new HttpClient(clientHandler) { BaseAddress = new Uri($"https://127.0.0.1:7227") };
+                clientHandler.SslProtocols = SslProtocols.None;
+                clientHandler.UseCookies= true;             
+                var client = new HttpClient(clientHandler) { BaseAddress = new Uri($"https://127.0.0.1:7227") };              
+                client.DefaultRequestHeaders.Add("Authorization", "Bearer " + token?.Value);
                 return client;
             });
 

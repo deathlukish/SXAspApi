@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SharedLibPhoneBook;
+using System.Net;
 using System.Text;
 using System.Text.Json;
 
@@ -72,7 +73,7 @@ namespace SXWebClient.Controllers
         public async Task<IActionResult> Users()
         { 
             var a = await _httpClient.GetAsync("webapi/PhoneBooks/Test");
-            if (a.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+            if (a.StatusCode == HttpStatusCode.Unauthorized)
             {
                 return View("Auth");
             }
@@ -83,9 +84,7 @@ namespace SXWebClient.Controllers
         {
             if (ModelState.IsValid)
             {
-                //message will collect the String value from the model method.
                 string message = "fds";
-                //RedirectToAction("actionName/ViewName_ActionResultMethodName", "ControllerName");
                 if (message.Equals("1"))
                 {
 
@@ -95,9 +94,13 @@ namespace SXWebClient.Controllers
                     ViewBag.ErrorMessage = message;
                 }
             }
-           var a =  await _httpClient.PostAsJsonAsync("webapi/UserAuth", users);
-          
-            return View("Auth",users);
+            var a =  await _httpClient.PostAsJsonAsync("webapi/UserAuth", users);
+            if (a.IsSuccessStatusCode)
+            {
+                var b = await a.Content.ReadAsStringAsync();
+                Response.Cookies.Append("jwt", b);
+            }
+           return View("Auth",users);
         }
 
     }

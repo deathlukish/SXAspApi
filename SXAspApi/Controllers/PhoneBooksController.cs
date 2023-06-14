@@ -28,6 +28,7 @@ namespace SXAspApi.Controllers
 
         }
         [HttpDelete("{id:int}")]
+        [Authorize]
         public async Task<IActionResult> DeleteNote(int id)
         {
             try
@@ -75,10 +76,10 @@ namespace SXAspApi.Controllers
             }
         }
         [HttpGet("Test")]
-        [Authorize(Roles ="Admin")]
+        [Authorize]
         public async Task<IActionResult> TestingAuth()
         {
-
+           
            return Ok();
         }
     }
