@@ -33,9 +33,8 @@ namespace SXAspApi.Controllers
             //    {
             //        return BadRequest("Логин/пароль не распознаны");
             //    }
-
             //}
-            var claims = new List<Claim> { new Claim(ClaimTypes.Name, user.UserId) };
+            var claims = new List<Claim> { new Claim(ClaimTypes.Name, "dfsdfds"), new Claim(ClaimTypes.Role, "Admin") };
             var token = new JwtSecurityToken(
                     issuer: "server",
                     audience: "client",
