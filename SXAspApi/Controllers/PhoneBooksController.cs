@@ -28,7 +28,7 @@ namespace SXAspApi.Controllers
 
         }
         [HttpDelete("{id:int}")]
-        [Authorize]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteNote(int id)
         {
             try
