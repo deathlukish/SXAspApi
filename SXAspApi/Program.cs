@@ -1,17 +1,13 @@
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using SXAspApi.Controllers;
 using SXAspApi.Models;
 using SXAspApi.Services;
-using System.Security.Claims;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
-// Add services to the container.
+
 var connection = builder.Configuration.GetConnectionString("PhoneConnectionString");
 var identityCon = builder.Configuration.GetConnectionString("IdentityConnectionString");
 builder.Services.AddControllers();
@@ -44,21 +40,6 @@ builder.Services.AddAuthentication(opts =>
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("superpupersecurity")),
         ValidateIssuerSigningKey = true,
     };
-    //opts.Events = new JwtBearerEvents
-    //{
-    //    OnTokenValidated = async ctx =>
-    //    {
-    //        var usrmgr = ctx.HttpContext.RequestServices
-    //            .GetRequiredService<UserManager<IdentityUser>>();
-    //        var signinmgr = ctx.HttpContext.RequestServices
-    //            .GetRequiredService<SignInManager<IdentityUser>>();
-    //        string username =
-    //            ctx.Principal.FindFirst(ClaimTypes.Name)?.Value;
-    //        IdentityUser idUser = await usrmgr.FindByNameAsync(username);
-    //        ctx.Principal =
-    //            await signinmgr.CreateUserPrincipalAsync(idUser);
-    //    }
-    //};
 });
 builder.Services.AddScoped<IPhoneBookService, Phones>();
 var app = builder.Build();
@@ -70,7 +51,6 @@ app.UseHttpsRedirection();
 app.UseAuthentication();
 
 app.UseAuthorization();
-
 
 app.MapControllers();
 
