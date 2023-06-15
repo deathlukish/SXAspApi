@@ -6,5 +6,7 @@ namespace SXWebClient.Services
     {
         Task DeleteNoteFromApi(int id);
         Task<IEnumerable<PhoneBook>> GetNotesFromApi();
+        Task TestAuth();
+        Task<string> GetToken(User user);
     }
 }

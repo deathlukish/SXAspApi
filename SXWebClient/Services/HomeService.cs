@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SharedLibPhoneBook;
+using System.Net.Http.Headers;
 
 namespace SXWebClient.Services
 {
@@ -15,6 +16,21 @@ namespace SXWebClient.Services
         {
             await _httpClient.DeleteAsync($"webapi/PhoneBooks/{id}");
 
+        }
+        public async Task TestAuth()
+        {
+            var a = await _httpClient.GetAsync("webapi/PhoneBooks/Test");
+        
+        }
+        public async Task<string> GetToken(User user)
+        {
+            var a = await _httpClient.PostAsJsonAsync("webapi/UserAuth", user);
+            if (a.IsSuccessStatusCode)
+            {
+                _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", await a.Content.ReadAsStringAsync());
+                return await a.Content.ReadAsStringAsync(); 
+            }
+            return null;
         }
     }
 }

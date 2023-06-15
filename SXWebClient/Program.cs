@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using SXWebClient.Services;
@@ -18,7 +20,7 @@ namespace SXWebClient
             var builder = WebApplication.CreateBuilder(args);
             builder.Services.AddHttpContextAccessor();
             //builder.Services.AddScoped<IHttpContextAccessor, HttpContextAccessor>();
-            builder.Services.AddTransient<BackendApiAuthenticationHttpClientHandler>();
+            builder.Services.AddTransient<DependTokenFromCookies>();
             // Add services to the container.
             builder.Services.AddMvc();
             builder.Services.AddHttpClient<IHomeService, HomeService>()
@@ -29,7 +31,47 @@ namespace SXWebClient
                                 SslProtocols = SslProtocols.None,
                                 UseCookies = true
                             })
-                            .AddHttpMessageHandler<BackendApiAuthenticationHttpClientHandler>();              
+                            .AddHttpMessageHandler<DependTokenFromCookies>();  
+            builder.Services.AddAuthentication(opts =>
+            {
+                opts.DefaultScheme =
+                    CookieAuthenticationDefaults.AuthenticationScheme;
+                opts.DefaultChallengeScheme =
+                    JwtBearerDefaults.AuthenticationScheme;
+            }).AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, options =>
+            {
+                options.Cookie.Name = "AuthCooke";
+            }).AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, opts =>
+            {
+               
+                //opts.TokenValidationParameters = new TokenValidationParameters
+                //{
+                //    ValidateIssuer = true,
+                //    ValidIssuer = AuthOptions.ISSUER,
+                //    ValidateAudience = true,
+                //    ValidAudience = AuthOptions.AUDIENCE,
+                //    ValidateLifetime = true,
+                //    IssuerSigningKey = AuthOptions.GetSymmetricSecurityKey(),
+                //    ValidateIssuerSigningKey = true,
+                //};
+                //opts.Events = new JwtBearerEvents
+                //{
+                //    OnTokenValidated = async ctx =>
+                //    {
+                //        var usrmgr = ctx.HttpContext.RequestServices
+                //            .GetRequiredService<UserManager<IdentityUser>>();
+                //        var signinmgr = ctx.HttpContext.RequestServices
+                //            .GetRequiredService<SignInManager<IdentityUser>>();
+                //        string username =
+                //            ctx.Principal.FindFirst(ClaimTypes.Name)?.Value;
+                //        IdentityUser idUser = await usrmgr.FindByNameAsync(username);
+                //        ctx.Principal =
+                //            await signinmgr.CreateUserPrincipalAsync(idUser);
+                //    }
+                //};
+            });
+
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.

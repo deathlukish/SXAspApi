@@ -74,16 +74,17 @@ namespace SXWebClient.Controllers
         }
         [HttpGet]
         public async Task<IActionResult> Users()
-        { 
-            var a = await _httpClient.GetAsync("webapi/PhoneBooks/Test");
-            if (a.StatusCode == HttpStatusCode.Unauthorized)
-            {
+        {
+            await _homeService.TestAuth();
+            //var a = await _httpClient.GetAsync("webapi/PhoneBooks/Test");
+            //if (a.StatusCode == HttpStatusCode.Unauthorized)
+            //{
                 return View("Auth");
-            }
-            return View("UserManager");
+            //}
+            //return View("UserManager");
         }
         [HttpPost]
-        public async Task<IActionResult> Users(User users)
+        public async Task<IActionResult> Users(User user)
         {
             if (ModelState.IsValid)
             {
@@ -97,13 +98,13 @@ namespace SXWebClient.Controllers
                     ViewBag.ErrorMessage = message;
                 }
             }
-            var a =  await _httpClient.PostAsJsonAsync("webapi/UserAuth", users);
-            if (a.IsSuccessStatusCode)
-            {
-                var b = await a.Content.ReadAsStringAsync();
-                Response.Cookies.Append("jwt", b);
-            }
-           return View("Auth",users);
+            var a = await _homeService.GetToken(user);
+            //if (a.IsSuccessStatusCode)
+            //{
+            //    var b = await a.Content.ReadAsStringAsync();
+           Response.Cookies.Append("jwt", a);
+            //}
+           return View("Auth",user);
         }
 
     }
