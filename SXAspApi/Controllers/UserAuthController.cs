@@ -34,10 +34,10 @@ namespace SXAspApi.Controllers
             //        return BadRequest("Логин/пароль не распознаны");
             //    }
             //}
-            var claims = new List<Claim> { new Claim(ClaimTypes.Name, "dfsdfds"), new Claim(ClaimTypes.Role, "Admin") };
+            var claims = new List<Claim> { new Claim(ClaimTypes.Name, "Testing"), new Claim(ClaimTypes.Role, "Admin") };
             var token = new JwtSecurityToken(
-                    issuer: "server",
-                    audience: "client",
+                    issuer: "Server",
+                    audience: "Client",
                     claims: claims,
                     expires: DateTime.UtcNow.Add(TimeSpan.FromDays(1)),
                     signingCredentials: new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes("superpupersecurity")), SecurityAlgorithms.HmacSha256));

@@ -31,12 +31,7 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options => {
 builder.Services.AddAuthentication(opts =>
 {
     opts.DefaultScheme =
-        CookieAuthenticationDefaults.AuthenticationScheme;
-    opts.DefaultChallengeScheme =
         JwtBearerDefaults.AuthenticationScheme;
-}).AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, options =>
-{
-    options.Cookie.Name = "AuthCooke";
 }).AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, opts =>
 {
     opts.TokenValidationParameters = new TokenValidationParameters
@@ -49,21 +44,21 @@ builder.Services.AddAuthentication(opts =>
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("superpupersecurity")),
         ValidateIssuerSigningKey = true,
     };
-    opts.Events = new JwtBearerEvents
-    {
-        OnTokenValidated = async ctx =>
-        {
-            var usrmgr = ctx.HttpContext.RequestServices
-                .GetRequiredService<UserManager<IdentityUser>>();
-            var signinmgr = ctx.HttpContext.RequestServices
-                .GetRequiredService<SignInManager<IdentityUser>>();
-            string username =
-                ctx.Principal.FindFirst(ClaimTypes.Name)?.Value;
-            IdentityUser idUser = await usrmgr.FindByNameAsync(username);
-            ctx.Principal =
-                await signinmgr.CreateUserPrincipalAsync(idUser);
-        }
-    };
+    //opts.Events = new JwtBearerEvents
+    //{
+    //    OnTokenValidated = async ctx =>
+    //    {
+    //        var usrmgr = ctx.HttpContext.RequestServices
+    //            .GetRequiredService<UserManager<IdentityUser>>();
+    //        var signinmgr = ctx.HttpContext.RequestServices
+    //            .GetRequiredService<SignInManager<IdentityUser>>();
+    //        string username =
+    //            ctx.Principal.FindFirst(ClaimTypes.Name)?.Value;
+    //        IdentityUser idUser = await usrmgr.FindByNameAsync(username);
+    //        ctx.Principal =
+    //            await signinmgr.CreateUserPrincipalAsync(idUser);
+    //    }
+    //};
 });
 builder.Services.AddScoped<IPhoneBookService, Phones>();
 var app = builder.Build();
@@ -72,9 +67,10 @@ SeedData.CreateMigrationBase(app);
 
 app.UseHttpsRedirection();
 
-app.UseAuthorization();
+app.UseAuthentication();
 
 app.UseAuthorization();
+
 
 app.MapControllers();
 

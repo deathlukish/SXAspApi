@@ -17,6 +17,10 @@ namespace SXWebClient.Services
             await _httpClient.DeleteAsync($"webapi/PhoneBooks/{id}");
 
         }
+        public async Task<PhoneBook> GetNoteFromApiAsync(int id)
+        {
+            return await _httpClient.GetFromJsonAsync<PhoneBookDetail>($"webapi/PhoneBooks/{id}");
+        }
         public async Task TestAuth()
         {
             var a = await _httpClient.GetAsync("webapi/PhoneBooks/Test");
@@ -32,5 +36,6 @@ namespace SXWebClient.Services
             }
             return null;
         }
+
     }
 }

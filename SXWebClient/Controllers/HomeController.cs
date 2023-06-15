@@ -52,7 +52,10 @@ namespace SXWebClient.Controllers
             await _httpClient.PatchAsync($"webapi/PhoneBooks/", requestContent);
             return RedirectToAction("index");
         }
-        public async Task<IActionResult> Remove(int id) => View(await _httpClient.GetFromJsonAsync<PhoneBookDetail>($"webapi/PhoneBooks/{id}"));
+        public async Task<IActionResult> Remove(int id)
+        {
+           return View(await _homeService.GetNoteFromApiAsync(id));
+        }
         [HttpPost, ActionName("Remove")]
         public async Task<IActionResult> Delete(int id)
         {
