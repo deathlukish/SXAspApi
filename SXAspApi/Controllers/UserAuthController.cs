@@ -9,6 +9,7 @@ using System.Security.Claims;
 using System;
 using System.Text;
 using System.Security.Principal;
+using Microsoft.AspNetCore.Authorization;
 
 namespace SXAspApi.Controllers
 {
@@ -23,7 +24,7 @@ namespace SXAspApi.Controllers
             _userManager = userManager;
             _sign = sign;
         }
-        [HttpPost]
+        [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] User user)
         {
             //if (user.UserId != null && user.Password != null)
@@ -43,6 +44,12 @@ namespace SXAspApi.Controllers
                     signingCredentials: new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes("superpupersecurity")), SecurityAlgorithms.HmacSha256));
             var encodedJwt = new JwtSecurityTokenHandler().WriteToken(token);
             return Ok(encodedJwt);
+        }
+        [HttpPost]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> AddUser([FromBody] User user)
+        {
+            return Ok();
         }
         
     }

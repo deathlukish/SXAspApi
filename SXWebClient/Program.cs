@@ -1,10 +1,5 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.DependencyInjection;
-using SXWebClient.Services;
-using System.Net;
-using System.Net.Http.Headers;
 using System.Security.Authentication;
 
 namespace SXWebClient
@@ -13,25 +8,20 @@ namespace SXWebClient
     {
         public static void Main(string[] args)
         {
-            HttpClientHandler clientHandler = new HttpClientHandler();
-            clientHandler.ServerCertificateCustomValidationCallback += (sender, cert, chain, sslPolicyErrors) => { return true; };
-            clientHandler.SslProtocols = SslProtocols.None;
-            clientHandler.UseCookies = true;
             var builder = WebApplication.CreateBuilder(args);
             builder.Services.AddHttpContextAccessor();
-            //builder.Services.AddScoped<IHttpContextAccessor, HttpContextAccessor>();
             builder.Services.AddTransient<DependTokenFromCookies>();
             // Add services to the container.
-            builder.Services.AddMvc();
-            builder.Services.AddHttpClient<IHomeService, HomeService>()
-                            .ConfigureHttpClient((b) => b.BaseAddress = new Uri($"https://127.0.0.1:7227")
-                            ).ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler
-                            {
-                                ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => true,
-                                SslProtocols = SslProtocols.None,
-                                UseCookies = true
-                            })
-                            .AddHttpMessageHandler<DependTokenFromCookies>();  
+            builder.Services.AddMvc();  
+            builder.Services.AddHttpClient("HomeClient", client =>
+                                                   {
+                                                   client.BaseAddress = new Uri($"https://127.0.0.1:7227");
+                                                   }).ConfigurePrimaryHttpMessageHandler(() =>
+                                                   new HttpClientHandler
+                                                   {
+                                                     ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => true,
+                                                     SslProtocols = SslProtocols.None,
+                                                   }).AddHttpMessageHandler<DependTokenFromCookies>();
             builder.Services.AddAuthentication(opts =>
             {
                 opts.DefaultScheme =
@@ -43,7 +33,7 @@ namespace SXWebClient
                 options.Cookie.Name = "AuthCooke";
             }).AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, opts =>
             {
-               
+
                 //opts.TokenValidationParameters = new TokenValidationParameters
                 //{
                 //    ValidateIssuer = true,

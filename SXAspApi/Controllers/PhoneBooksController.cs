@@ -44,17 +44,20 @@ namespace SXAspApi.Controllers
             return Ok();
         }
         [HttpPost]
+        [Authorize(Roles = "User, Admin")]
         public async Task<IActionResult> AddNote([FromBody] PhoneBookDetail note)
         {
             await _phoneBookService.AddNote(note);
             return Ok();
         }
         [HttpPatch]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> EditNote([FromBody] PhoneBookDetail note)
         {
             await _phoneBookService.EditNote(note);
             return Ok();
         }
+        [Authorize(Roles = "User, Admin")]
         [HttpGet("{id:int}")]
         public async Task<IActionResult> GetNoteById(int id)
         {
@@ -74,13 +77,6 @@ namespace SXAspApi.Controllers
             {
                 return StatusCode(StatusCodes.Status500InternalServerError);
             }
-        }
-        [HttpGet("Test")]
-        [Authorize]
-        public async Task<IActionResult> TestingAuth()
-        {
-           
-           return Ok();
-        }
+        }        
     }
 }
