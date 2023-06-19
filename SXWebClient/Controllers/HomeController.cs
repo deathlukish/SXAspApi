@@ -94,7 +94,7 @@ namespace SXWebClient.Controllers
         {
             if (ModelState.IsValid)
             {
-                var a = await _httpClient.PostAsJsonAsync("webapi/UserAuth/login", user);
+                var a = await _httpClient.PostAsJsonAsync("webapi/User/GetToken", user);
                 if (a.IsSuccessStatusCode)
                 {
                     var b = await a.Content.ReadAsStringAsync();

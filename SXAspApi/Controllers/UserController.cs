@@ -15,26 +15,26 @@ namespace SXAspApi.Controllers
 {
     [Route("webapi/[controller]")]
     [ApiController]
-    public class UserAuthController : ControllerBase
+    public class UserController : ControllerBase
     {
         private readonly UserManager<IdentityUser> _userManager;
         private readonly SignInManager<IdentityUser> _sign;
-        public UserAuthController(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> sign)
+        public UserController(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> sign)
         {
             _userManager = userManager;
             _sign = sign;
         }
-        [HttpPost("login")]
-        public async Task<IActionResult> Login([FromBody] User user)
+        [HttpPost("GetToken")]
+        public async Task<IActionResult> GetToken([FromBody] User user)
         {
-            //if (user.UserId != null && user.Password != null)
-            //{
-            //    var use = await _userManager.FindByNameAsync(user.UserId);
-            //    if (!await _sign.UserManager.CheckPasswordAsync(use, user.Password))
-            //    {
-            //        return BadRequest("Логин/пароль не распознаны");
-            //    }
-            //}
+            if (user.UserId != null && user.Password != null)
+            {
+                var use = await _userManager.FindByNameAsync(user.UserId);
+                if (!await _sign.UserManager.CheckPasswordAsync(use, user.Password))
+                {
+                    return BadRequest("Логин/пароль не распознаны");
+                }
+            }
             var claims = new List<Claim> { new Claim(ClaimTypes.Name, "Testing"), new Claim(ClaimTypes.Role, "Admin") };
             var token = new JwtSecurityToken(
                     issuer: "Server",
