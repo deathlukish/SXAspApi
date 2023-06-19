@@ -16,7 +16,7 @@ namespace SXWebClient.Controllers
         public IEnumerable<PhoneBook>? Notes { get; set; }
         private readonly HttpClient _httpClient;
         private readonly IHttpClientFactory _httpClientFactory = null!;
-        public PhoneBookDetail PhoneBook { get; set; } = new();
+        public PhoneBookDetail? PhoneBook { get; set; } = new();
         public HomeController(IHttpClientFactory httpClientFactory)
         {
             _httpClientFactory = httpClientFactory;
@@ -24,7 +24,6 @@ namespace SXWebClient.Controllers
         }
         public async Task<IActionResult> Index()
         {
-
             try
             {
                 Notes = await _httpClient.GetFromJsonAsync<List<PhoneBook>>("webapi/PhoneBooks");
@@ -43,12 +42,14 @@ namespace SXWebClient.Controllers
             }
             return NotFound();
         }
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(int id)
         {
             PhoneBook = await _httpClient.GetFromJsonAsync<PhoneBookDetail>($"webapi/PhoneBooks/{id}"); ;
             return View(PhoneBook);
         }
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(int id, [Bind("Id,FirstName,MiddleName,LastName,Phone,Description,Adres")] PhoneBookDetail note)
         {
             var serialize = JsonSerializer.Serialize(note);
@@ -56,6 +57,7 @@ namespace SXWebClient.Controllers
             await _httpClient.PatchAsync($"webapi/PhoneBooks/", requestContent);
             return RedirectToAction("index");
         }
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Remove(int id)
         {
             var a = await _httpClient.GetAsync($"webapi/PhoneBooks/{id}");
@@ -65,20 +67,22 @@ namespace SXWebClient.Controllers
             }
             return View(await a.Content.ReadFromJsonAsync<PhoneBookDetail>());
         }
+        [Authorize(Roles = "Admin")]
         [HttpPost, ActionName("Remove")]
         public async Task<IActionResult> Delete(int id)
         {
-            var a = await _httpClient.DeleteAsync($"webapi/PhoneBooks/{id}");
+            await _httpClient.DeleteAsync($"webapi/PhoneBooks/{id}");
             return RedirectToAction("index");
         }
-        [Authorize]
+        [Authorize(Roles = "User, Admin")]
         public async Task<IActionResult> Details(int id)
         {
             PhoneBook = await _httpClient.GetFromJsonAsync<PhoneBookDetail>($"webapi/PhoneBooks/{id}");
             return View(PhoneBook);
         }
+        [Authorize(Roles = "User, Admin")]
         public async Task<IActionResult> Create() => View();
-
+        [Authorize(Roles = "User, Admin")]
         [HttpPost]
         public async Task<IActionResult> Create([Bind("Id,FirstName,MiddleName,LastName,Phone,Description, Adres")] PhoneBookDetail note)
         {
@@ -86,42 +90,30 @@ namespace SXWebClient.Controllers
             return Redirect("index");
         }
         [HttpPost]
-        public async Task<IActionResult> Login(User user = null)
+        public async Task<IActionResult> Login(User user)
         {
             if (ModelState.IsValid)
             {
-                string message = "fds";
-                if (message.Equals("1"))
+                var a = await _httpClient.PostAsJsonAsync("webapi/UserAuth/login", user);
+                if (a.IsSuccessStatusCode)
                 {
-
-                }
-                else
-                {
-                    ViewBag.ErrorMessage = message;
-                }
+                    var b = await a.Content.ReadAsStringAsync();
+                    if (!string.IsNullOrEmpty(b))
+                    {
+                        var handler = new JwtSecurityTokenHandler();
+                        var jsonToken = handler.ReadJwtToken(b);
+                        var c = jsonToken.Claims;
+                        var claimsIdentity = new ClaimsIdentity(c, CookieAuthenticationDefaults.AuthenticationScheme);
+                        await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,
+                                                       new ClaimsPrincipal(claimsIdentity));
+                        Response.Cookies.Append("jwt", b);
+                        return Redirect(user.ReturnUrl);
+                    }
+                }              
             }
-            var a = await _httpClient.PostAsJsonAsync("webapi/UserAuth/login", user);
-            if (a.IsSuccessStatusCode)
-            {
-                var b = await a.Content.ReadAsStringAsync();
-                if (!string.IsNullOrEmpty(b))
-                {
-                    var handler = new JwtSecurityTokenHandler();
-                    var jsonToken = handler.ReadJwtToken(b);
-                    var c = jsonToken.Claims;
-                    var claimsIdentity = new ClaimsIdentity(c, CookieAuthenticationDefaults.AuthenticationScheme);
-                    await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,
-                                                   new ClaimsPrincipal(claimsIdentity));
-                    Response.Cookies.Append("jwt", b);
-                    return Redirect(user.ReturnUrl);
-                }
-            }
+            ViewBag.ErrorMessage = "Логин/пароль не распознаны";
             return View();
         }
-
-        public async Task<IActionResult> Login([FromQuery] string ReturnUrl)
-        {
-            return View("Login", new User { ReturnUrl = ReturnUrl });
-        }
+        public IActionResult Login([FromQuery] string ReturnUrl) => View("Login", new User { ReturnUrl = ReturnUrl });        
     }
 }
