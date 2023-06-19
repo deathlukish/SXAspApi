@@ -22,45 +22,12 @@ namespace SXWebClient
                                                      ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => true,
                                                      SslProtocols = SslProtocols.None,
                                                    }).AddHttpMessageHandler<DependTokenFromCookies>();
-            builder.Services.AddAuthentication(opts =>
-            {
-                opts.DefaultScheme =
-                    CookieAuthenticationDefaults.AuthenticationScheme;
-                opts.DefaultChallengeScheme =
-                    JwtBearerDefaults.AuthenticationScheme;
-            }).AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, options =>
-            {
-                options.Cookie.Name = "AuthCooke";
-            }).AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, opts =>
-            {
-
-                //opts.TokenValidationParameters = new TokenValidationParameters
-                //{
-                //    ValidateIssuer = true,
-                //    ValidIssuer = AuthOptions.ISSUER,
-                //    ValidateAudience = true,
-                //    ValidAudience = AuthOptions.AUDIENCE,
-                //    ValidateLifetime = true,
-                //    IssuerSigningKey = AuthOptions.GetSymmetricSecurityKey(),
-                //    ValidateIssuerSigningKey = true,
-                //};
-                //opts.Events = new JwtBearerEvents
-                //{
-                //    OnTokenValidated = async ctx =>
-                //    {
-                //        var usrmgr = ctx.HttpContext.RequestServices
-                //            .GetRequiredService<UserManager<IdentityUser>>();
-                //        var signinmgr = ctx.HttpContext.RequestServices
-                //            .GetRequiredService<SignInManager<IdentityUser>>();
-                //        string username =
-                //            ctx.Principal.FindFirst(ClaimTypes.Name)?.Value;
-                //        IdentityUser idUser = await usrmgr.FindByNameAsync(username);
-                //        ctx.Principal =
-                //            await signinmgr.CreateUserPrincipalAsync(idUser);
-                //    }
-                //};
-            });
-
+            builder.Services.AddAuthentication(opts => opts.DefaultScheme =
+        CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie(o =>
+                {
+                    o.LoginPath = "/home/login";
+                });
 
             var app = builder.Build();
 
@@ -77,8 +44,8 @@ namespace SXWebClient
 
             app.UseRouting();
 
-            app.UseAuthorization();
             app.UseAuthentication();
+            app.UseAuthorization();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(

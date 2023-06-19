@@ -1,8 +1,13 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SharedLibPhoneBook;
+using System.IdentityModel.Tokens.Jwt;
 using System.Net;
 using System.Net.Http.Json;
+using System.Runtime.InteropServices;
+using System.Security.Claims;
 using System.Text;
 using System.Text.Json;
 
@@ -11,19 +16,18 @@ namespace SXWebClient.Controllers
     public class HomeController : Controller
     {
         public IEnumerable<PhoneBook>? Notes { get; set; }
-        private readonly HttpClient _httpClient;
+        //private readonly HttpClient _httpClient;
         private readonly IHttpClientFactory _httpClientFactory = null!;
         public PhoneBookDetail PhoneBook { get; set; } = new();
-        public HomeController(HttpClient httpClient, IHttpClientFactory httpClientFactory)
+        public HomeController(IHttpClientFactory httpClientFactory)
         {
-            _httpClient = httpClient;
             _httpClientFactory = httpClientFactory;
         }
         public async Task<IActionResult> Index()
         {
+            using HttpClient client = _httpClientFactory.CreateClient("HomeClient" ?? "");
             try
             {
-                using HttpClient client = _httpClientFactory.CreateClient("HomeClient" ?? "");
                 Notes = await client.GetFromJsonAsync<List<PhoneBook>>("webapi/PhoneBooks");
             }
             catch (Exception ex)
@@ -32,7 +36,7 @@ namespace SXWebClient.Controllers
             }
             finally
             {
-                _httpClient?.Dispose();
+                client?.Dispose();
             }
             if (Notes != null)
             {
@@ -61,22 +65,23 @@ namespace SXWebClient.Controllers
             var a = await client.GetAsync($"webapi/PhoneBooks/{id}");
             if (a.StatusCode == HttpStatusCode.Unauthorized)
             {
-                return RedirectToAction("Auth");
+                var ba = HttpContext.Request.Path;
+                return RedirectToAction("Login");
             }           
             return View(await a.Content.ReadFromJsonAsync<PhoneBookDetail>());
         }
         [HttpPost, ActionName("Remove")]
         public async Task<IActionResult> Delete(int id)
         {
-
             HttpResponseMessage httpResponse = new();
             using HttpClient client = _httpClientFactory.CreateClient("HomeClient" ?? "");
-            var a = await client.DeleteAsync($"webapi/PhoneBooks/{id}");
-            
+            var a = await client.DeleteAsync($"webapi/PhoneBooks/{id}");            
             return RedirectToAction("index");
         }
+        [Authorize]
         public async Task<IActionResult> Details(int id)
         {
+            var identity = HttpContext.User.Identity as ClaimsIdentity;
             using HttpClient client = _httpClientFactory.CreateClient("HomeClient" ?? ""); 
             PhoneBook = await client.GetFromJsonAsync<PhoneBookDetail>($"webapi/PhoneBooks/{id}");           
             return View(PhoneBook);
@@ -91,7 +96,7 @@ namespace SXWebClient.Controllers
             return Redirect("index");
         }
         [HttpPost]
-        public async Task<IActionResult> Auth(User user)
+        public async Task<IActionResult> Login(User user)
         {
             if (ModelState.IsValid)
             {
@@ -107,16 +112,26 @@ namespace SXWebClient.Controllers
             }
             using HttpClient client = _httpClientFactory.CreateClient("HomeClient" ?? "");
             var a = await client.PostAsJsonAsync("webapi/UserAuth/login", user);
-            //if (a.IsSuccessStatusCode)
-            //{
-            //    var b = await a.Content.ReadAsStringAsync();
-           Response.Cookies.Append("jwt", await a.Content.ReadAsStringAsync());
-            //}
-           return View("Auth",user);
+            if (a.IsSuccessStatusCode)
+            {
+                var b = await a.Content.ReadAsStringAsync();
+                if (!string.IsNullOrEmpty(b))
+                {
+                    var handler = new JwtSecurityTokenHandler();
+                    var jsonToken = handler.ReadJwtToken(b);
+                    var c = jsonToken.Claims;
+                    var claimsIdentity = new ClaimsIdentity(c, CookieAuthenticationDefaults.AuthenticationScheme);
+                    await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,
+                                                   new ClaimsPrincipal(claimsIdentity));
+                    Response.Cookies.Append("jwt", b);
+                }
+            }
+            return Redirect("Index");
         }
-        public async Task<IActionResult> Auth()
+        public async Task<IActionResult> Login(string red)
         {
-            return View("Auth");
+            var a = red;
+            return View("Login");
         }
     }
 }
