@@ -5,8 +5,6 @@ using Microsoft.AspNetCore.Mvc;
 using SharedLibPhoneBook;
 using System.IdentityModel.Tokens.Jwt;
 using System.Net;
-using System.Net.Http.Json;
-using System.Runtime.InteropServices;
 using System.Security.Claims;
 using System.Text;
 using System.Text.Json;
@@ -16,19 +14,20 @@ namespace SXWebClient.Controllers
     public class HomeController : Controller
     {
         public IEnumerable<PhoneBook>? Notes { get; set; }
-        //private readonly HttpClient _httpClient;
+        private readonly HttpClient _httpClient;
         private readonly IHttpClientFactory _httpClientFactory = null!;
         public PhoneBookDetail PhoneBook { get; set; } = new();
         public HomeController(IHttpClientFactory httpClientFactory)
         {
             _httpClientFactory = httpClientFactory;
+            _httpClient = _httpClientFactory.CreateClient("HomeClient" ?? "");
         }
         public async Task<IActionResult> Index()
         {
-            using HttpClient client = _httpClientFactory.CreateClient("HomeClient" ?? "");
+            
             try
             {
-                Notes = await client.GetFromJsonAsync<List<PhoneBook>>("webapi/PhoneBooks");
+                Notes = await _httpClient.GetFromJsonAsync<List<PhoneBook>>("webapi/PhoneBooks");
             }
             catch (Exception ex)
             {
@@ -36,7 +35,7 @@ namespace SXWebClient.Controllers
             }
             finally
             {
-                client?.Dispose();
+                _httpClient?.Dispose();
             }
             if (Notes != null)
             {
@@ -45,54 +44,45 @@ namespace SXWebClient.Controllers
             return NotFound();
         }
         public async Task<IActionResult> Edit(int id)
-        {
-            using HttpClient client = _httpClientFactory.CreateClient("HomeClient" ?? "");
-            PhoneBook = await client.GetFromJsonAsync<PhoneBookDetail>($"webapi/PhoneBooks/{id}"); ;           
+        {          
+            PhoneBook = await _httpClient.GetFromJsonAsync<PhoneBookDetail>($"webapi/PhoneBooks/{id}"); ;           
             return View(PhoneBook);
         }
         [HttpPost]
         public async Task<IActionResult> Edit(int id, [Bind("Id,FirstName,MiddleName,LastName,Phone,Description,Adres")] PhoneBookDetail note)
         {
             var serialize = JsonSerializer.Serialize(note);
-            var requestContent = new StringContent(serialize, Encoding.UTF8, "application/json-patch+json");
-            using HttpClient client = _httpClientFactory.CreateClient("HomeClient" ?? "");
-            await client.PatchAsync($"webapi/PhoneBooks/", requestContent);
+            var requestContent = new StringContent(serialize, Encoding.UTF8, "application/json-patch+json");           
+            await _httpClient.PatchAsync($"webapi/PhoneBooks/", requestContent);
             return RedirectToAction("index");
         }
         public async Task<IActionResult> Remove(int id)
-        {
-            using HttpClient client = _httpClientFactory.CreateClient("HomeClient" ?? "");
-            var a = await client.GetAsync($"webapi/PhoneBooks/{id}");
+        {            
+            var a = await _httpClient.GetAsync($"webapi/PhoneBooks/{id}");
             if (a.StatusCode == HttpStatusCode.Unauthorized)
             {
-                var ba = HttpContext.Request.Path;
                 return RedirectToAction("Login");
             }           
             return View(await a.Content.ReadFromJsonAsync<PhoneBookDetail>());
         }
         [HttpPost, ActionName("Remove")]
         public async Task<IActionResult> Delete(int id)
-        {
-            HttpResponseMessage httpResponse = new();
-            using HttpClient client = _httpClientFactory.CreateClient("HomeClient" ?? "");
-            var a = await client.DeleteAsync($"webapi/PhoneBooks/{id}");            
+        {           
+            var a = await _httpClient.DeleteAsync($"webapi/PhoneBooks/{id}");            
             return RedirectToAction("index");
         }
         [Authorize]
         public async Task<IActionResult> Details(int id)
-        {
-            var identity = HttpContext.User.Identity as ClaimsIdentity;
-            using HttpClient client = _httpClientFactory.CreateClient("HomeClient" ?? ""); 
-            PhoneBook = await client.GetFromJsonAsync<PhoneBookDetail>($"webapi/PhoneBooks/{id}");           
+        {        
+            PhoneBook = await _httpClient.GetFromJsonAsync<PhoneBookDetail>($"webapi/PhoneBooks/{id}");           
             return View(PhoneBook);
         }
         public async Task<IActionResult> Create() => View();
 
         [HttpPost]
         public async Task<IActionResult> Create([Bind("Id,FirstName,MiddleName,LastName,Phone,Description, Adres")] PhoneBookDetail note)
-        {
-            using HttpClient client = _httpClientFactory.CreateClient("HomeClient" ?? "");
-            await client.PostAsJsonAsync("webapi/PhoneBooks", note);
+        {           
+            await _httpClient.PostAsJsonAsync("webapi/PhoneBooks", note);
             return Redirect("index");
         }
         [HttpPost]
@@ -109,9 +99,8 @@ namespace SXWebClient.Controllers
                 {
                     ViewBag.ErrorMessage = message;
                 }
-            }
-            using HttpClient client = _httpClientFactory.CreateClient("HomeClient" ?? "");
-            var a = await client.PostAsJsonAsync("webapi/UserAuth/login", user);
+            }           
+            var a = await _httpClient.PostAsJsonAsync("webapi/UserAuth/login", user);
             if (a.IsSuccessStatusCode)
             {
                 var b = await a.Content.ReadAsStringAsync();
@@ -128,7 +117,7 @@ namespace SXWebClient.Controllers
             }
             return Redirect("Index");
         }
-        public async Task<IActionResult> Login(string red)
+        public async Task<IActionResult> Login([FromQuery]string red)
         {
             var a = red;
             return View("Login");
