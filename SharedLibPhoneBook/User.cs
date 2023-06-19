@@ -13,12 +13,13 @@ namespace SharedLibPhoneBook
 
         [Required(ErrorMessage = "Введите логин")]
         [Display(Name = "Логин : ")]
-        public string UserId { get; set; }
+        public string? UserId { get; set; } = null;
 
         [DataType(DataType.Password)]
         [Required(ErrorMessage = "Введите пароль")]
         [Display(Name = "Пароль : ")]
-        public string Password { get; set; }    
+        public string? Password { get; set; } = null;
+        public string ReturnUrl { get; set; }
 
     }
 }

@@ -24,7 +24,7 @@ namespace SXWebClient.Controllers
         }
         public async Task<IActionResult> Index()
         {
-            
+
             try
             {
                 Notes = await _httpClient.GetFromJsonAsync<List<PhoneBook>>("webapi/PhoneBooks");
@@ -44,49 +44,49 @@ namespace SXWebClient.Controllers
             return NotFound();
         }
         public async Task<IActionResult> Edit(int id)
-        {          
-            PhoneBook = await _httpClient.GetFromJsonAsync<PhoneBookDetail>($"webapi/PhoneBooks/{id}"); ;           
+        {
+            PhoneBook = await _httpClient.GetFromJsonAsync<PhoneBookDetail>($"webapi/PhoneBooks/{id}"); ;
             return View(PhoneBook);
         }
         [HttpPost]
         public async Task<IActionResult> Edit(int id, [Bind("Id,FirstName,MiddleName,LastName,Phone,Description,Adres")] PhoneBookDetail note)
         {
             var serialize = JsonSerializer.Serialize(note);
-            var requestContent = new StringContent(serialize, Encoding.UTF8, "application/json-patch+json");           
+            var requestContent = new StringContent(serialize, Encoding.UTF8, "application/json-patch+json");
             await _httpClient.PatchAsync($"webapi/PhoneBooks/", requestContent);
             return RedirectToAction("index");
         }
         public async Task<IActionResult> Remove(int id)
-        {            
+        {
             var a = await _httpClient.GetAsync($"webapi/PhoneBooks/{id}");
             if (a.StatusCode == HttpStatusCode.Unauthorized)
             {
                 return RedirectToAction("Login");
-            }           
+            }
             return View(await a.Content.ReadFromJsonAsync<PhoneBookDetail>());
         }
         [HttpPost, ActionName("Remove")]
         public async Task<IActionResult> Delete(int id)
-        {           
-            var a = await _httpClient.DeleteAsync($"webapi/PhoneBooks/{id}");            
+        {
+            var a = await _httpClient.DeleteAsync($"webapi/PhoneBooks/{id}");
             return RedirectToAction("index");
         }
         [Authorize]
         public async Task<IActionResult> Details(int id)
-        {        
-            PhoneBook = await _httpClient.GetFromJsonAsync<PhoneBookDetail>($"webapi/PhoneBooks/{id}");           
+        {
+            PhoneBook = await _httpClient.GetFromJsonAsync<PhoneBookDetail>($"webapi/PhoneBooks/{id}");
             return View(PhoneBook);
         }
         public async Task<IActionResult> Create() => View();
 
         [HttpPost]
         public async Task<IActionResult> Create([Bind("Id,FirstName,MiddleName,LastName,Phone,Description, Adres")] PhoneBookDetail note)
-        {           
+        {
             await _httpClient.PostAsJsonAsync("webapi/PhoneBooks", note);
             return Redirect("index");
         }
         [HttpPost]
-        public async Task<IActionResult> Login(User user)
+        public async Task<IActionResult> Login(User user = null)
         {
             if (ModelState.IsValid)
             {
@@ -99,7 +99,7 @@ namespace SXWebClient.Controllers
                 {
                     ViewBag.ErrorMessage = message;
                 }
-            }           
+            }
             var a = await _httpClient.PostAsJsonAsync("webapi/UserAuth/login", user);
             if (a.IsSuccessStatusCode)
             {
@@ -113,14 +113,15 @@ namespace SXWebClient.Controllers
                     await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,
                                                    new ClaimsPrincipal(claimsIdentity));
                     Response.Cookies.Append("jwt", b);
+                    return Redirect(user.ReturnUrl);
                 }
             }
-            return Redirect("Index");
+            return View();
         }
-        public async Task<IActionResult> Login([FromQuery]string red)
+
+        public async Task<IActionResult> Login([FromQuery] string ReturnUrl)
         {
-            var a = red;
-            return View("Login");
+            return View("Login", new User { ReturnUrl = ReturnUrl });
         }
     }
 }
