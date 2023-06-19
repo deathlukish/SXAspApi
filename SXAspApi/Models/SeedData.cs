@@ -63,8 +63,7 @@ namespace SXAspApi.Models
                     FirstName = "Сидр",
                     MiddleName = "Сидорович",
                     LastName = "Сидоров",
-                    Description = "Какое-то описание"
-                    
+                    Description = "Какое-то описание"                    
                 }
                 );
                 books.SaveChanges();
