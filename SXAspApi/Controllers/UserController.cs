@@ -47,6 +47,17 @@ namespace SXAspApi.Controllers
         {
             return Ok();
         }
-
+        [HttpGet("GetAllUser")]
+        public async Task<IActionResult> GetAllUser()
+        {
+            List<User> Users = new(); 
+            foreach (var item in _sign.UserManager.Users)
+            {
+                //await _userManager.GetRolesAsync(item);
+                Users.Add(new User { UserId = item.Id });
+                
+            }
+            return Ok(Users);
+        }
     }
 }
