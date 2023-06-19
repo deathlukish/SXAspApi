@@ -1,15 +1,11 @@
-﻿using Microsoft.AspNetCore.Authentication.OAuth;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using SharedLibPhoneBook;
-using SXAspApi.Migrations;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
-using System;
 using System.Text;
-using System.Security.Principal;
-using Microsoft.AspNetCore.Authorization;
 
 namespace SXAspApi.Controllers
 {
@@ -51,6 +47,6 @@ namespace SXAspApi.Controllers
         {
             return Ok();
         }
-        
+
     }
 }
