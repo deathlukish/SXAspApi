@@ -5,8 +5,8 @@ namespace SXAspApi.Models
 {
     public static class SeedData
     {
-        private const string User = "admin";
-        private const string Pass = "12345678";
+        private const string User = "Admin";
+        private const string Pass = "Admin";
         public static async void CreateMigrationBase(IApplicationBuilder app)
         {
             var context = app.ApplicationServices
@@ -31,16 +31,14 @@ namespace SXAspApi.Models
                 .CreateScope().ServiceProvider
                 .GetRequiredService<RoleManager<IdentityRole>>();
             IdentityUser user = await manager.FindByNameAsync(User);
-            await _roleManager.CreateAsync(new IdentityRole("admin"));
-            await _roleManager.CreateAsync(new IdentityRole("guest"));
-            await _roleManager.CreateAsync(new IdentityRole("user"));
-
+            await _roleManager.CreateAsync(new IdentityRole("Admin"));
+            await _roleManager.CreateAsync(new IdentityRole("User"));
             if (user == null)
             {
                 user = new IdentityUser(User);
-                await manager.CreateAsync(user, Pass);
-                await manager.AddToRoleAsync(user, "admin");
-            }
+                await manager.CreateAsync(user, Pass);               
+                await manager.AddToRoleAsync(user, "Admin");               
+            }          
             var books = app.ApplicationServices.CreateScope().ServiceProvider.GetRequiredService<PhoneBookContext>();
             if (!books.Notes.Any())
             {
@@ -64,7 +62,8 @@ namespace SXAspApi.Models
                 {
                     FirstName = "Сидр",
                     MiddleName = "Сидорович",
-                    LastName = "Сидоров"
+                    LastName = "Сидоров",
+                    Description = "Какое-то описание"
                     
                 }
                 );
