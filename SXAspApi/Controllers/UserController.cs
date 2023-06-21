@@ -9,6 +9,7 @@ using System.Text;
 
 namespace SXAspApi.Controllers
 {
+    [Authorize(Roles = "Admin")]
     [Route("webapi/[controller]")]
     [ApiController]
     public class UserController : ControllerBase
@@ -18,6 +19,7 @@ namespace SXAspApi.Controllers
         {
             _userManager = userManager;
         }
+        [AllowAnonymous]
         [HttpPost("GetToken")]
         public async Task<IActionResult> GetToken([FromBody] User user)
         {
@@ -41,8 +43,8 @@ namespace SXAspApi.Controllers
             var encodedJwt = new JwtSecurityTokenHandler().WriteToken(token);
             return Ok(encodedJwt);
         }
+
         [HttpPost("AddUser")]
-        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> AddUser([FromBody] UserApi user)
         {
             if (user != null) 
@@ -53,7 +55,7 @@ namespace SXAspApi.Controllers
             }
             return Ok();
         }
-        //[HttpDelete(("{name}"))]
+
         [HttpDelete("DellUser/{user}")]
         public async Task<IActionResult> DellUser(string user)
         {
@@ -61,7 +63,7 @@ namespace SXAspApi.Controllers
             await _userManager.DeleteAsync(userIdent);
             return Ok();
         }
-        [HttpGet("GetAllUser")]
+        [HttpGet("GetAllUSer")]
         public async Task<IActionResult> GetAllUser()
         {
             List<UserApi> Users = new();
