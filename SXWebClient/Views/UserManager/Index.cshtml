@@ -1,3 +1,31 @@
-﻿hjghjgh
+﻿@model IEnumerable<SharedLibPhoneBook.UserApi>
 @{
+    Layout = "_Layout";
 }
+<table class="table">
+    <thead>
+        <tr>
+            <th>Имя</th>
+            <th>Почта</th>
+            <th>Роль</th>
+@*            <th></th>*@
+        </tr>
+    </thead>
+    <tbody>
+
+        @foreach (var item in Model)
+        {
+                  <tr>
+                    <td>@item.Name</td>
+                    <td>@item.Email</td>
+                    <td>@item.Role?.RoleName</td>
+                    @*<td>
+                        <a asp-action="Edit" asp-route-id="@item.Id">Редактировать</a> |
+                        <a asp-action="Details" asp-route-id="@item.Id">Детали</a> |
+                        <a asp-action="Remove" asp-route-id="@item.Id">Удалить</a> 
+                    </td>*@
+                  </tr>
+        }
+    </tbody>
+</table>
+<p><a asp-action="Create">Добавить запись</a></p>

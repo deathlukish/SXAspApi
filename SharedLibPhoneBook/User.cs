@@ -19,7 +19,8 @@ namespace SharedLibPhoneBook
         [Required(ErrorMessage = "Введите пароль")]
         [Display(Name = "Пароль : ")]
         public string? Password { get; set; } = null;
-        public string ReturnUrl { get; set; }
+
+        public string ReturnUrl { get; set; } = "/";
 
     }
 }

@@ -89,6 +89,7 @@ namespace SXWebClient.Controllers
             await _httpClient.PostAsJsonAsync("webapi/PhoneBooks", note);
             return Redirect("index");
         }
+        [AllowAnonymous]
         [HttpPost]
         public async Task<IActionResult> Login(User user)
         {
@@ -114,6 +115,14 @@ namespace SXWebClient.Controllers
             ViewBag.ErrorMessage = "Логин/пароль не распознаны";
             return View();
         }
-        public IActionResult Login([FromQuery] string ReturnUrl) => View("Login", new User { ReturnUrl = ReturnUrl });        
+        [AllowAnonymous]
+        public IActionResult Login([FromQuery] string ReturnUrl) => View("Login", new User { ReturnUrl = ReturnUrl });
+        [Authorize]
+        public async Task<IActionResult> Logout()
+        {
+            await HttpContext.SignOutAsync();
+            Response.Cookies.Delete("jwt");
+            return Redirect("index");
+        }
     }
 }
