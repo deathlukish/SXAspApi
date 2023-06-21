@@ -8,16 +8,11 @@ using System.Xml.Linq;
 
 namespace SharedLibPhoneBook
 {
-    public class User
+    public class NewUser : UserApi
     {
-        [Required(ErrorMessage = "Введите логин")]
-        [Display(Name = "Логин : ")]
-        public string? Name { get; set; } = null;
         [DataType(DataType.Password)]
         [Required(ErrorMessage = "Введите пароль")]
-        [Display(Name = "Пароль : ")]
-        public string? Password { get; set; } = null;
-        public string ReturnUrl { get; set; } = "/";
+        [Display(Name = "Повторите : ")]
+        public string? RepPaswword { get; set; }
     }
 }
-

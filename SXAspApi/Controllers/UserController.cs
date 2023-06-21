@@ -3,9 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using SharedLibPhoneBook;
-using System.Data;
 using System.IdentityModel.Tokens.Jwt;
-using System.Runtime.Intrinsics.X86;
 using System.Security.Claims;
 using System.Text;
 
@@ -16,26 +14,24 @@ namespace SXAspApi.Controllers
     public class UserController : ControllerBase
     {
         private readonly UserManager<IdentityUser> _userManager;
-        private readonly SignInManager<IdentityUser> _sign;
-        public UserController(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> sign)
+        public UserController(UserManager<IdentityUser> userManager)
         {
             _userManager = userManager;
-            _sign = sign;
         }
         [HttpPost("GetToken")]
         public async Task<IActionResult> GetToken([FromBody] User user)
         {
             IdentityUser use = new();
-            if (user.UserId != null && user.Password != null)
+            if (user.Name != null && user.Password != null)
             {
-                use = await _userManager.FindByNameAsync(user.UserId);
-                if (!await _sign.UserManager.CheckPasswordAsync(use, user.Password))
+                use = await _userManager.FindByNameAsync(user.Name);
+                if (!await _userManager.CheckPasswordAsync(use, user.Password))
                 {
                     return BadRequest("Логин/пароль не распознаны");
                 }
             }
             var roles = await _userManager.GetRolesAsync(use);
-            var claims = new List<Claim> { new Claim(ClaimTypes.Name, user.UserId), new Claim(ClaimTypes.Role, roles.FirstOrDefault()) };
+            var claims = new List<Claim> { new Claim(ClaimTypes.Name, user.Name), new Claim(ClaimTypes.Role, roles.FirstOrDefault()) };
             var token = new JwtSecurityToken(
                     issuer: "Server",
                     audience: "Client",
@@ -45,19 +41,35 @@ namespace SXAspApi.Controllers
             var encodedJwt = new JwtSecurityTokenHandler().WriteToken(token);
             return Ok(encodedJwt);
         }
-        [HttpPost]
+        [HttpPost("AddUser")]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> AddUser([FromBody] User user)
+        public async Task<IActionResult> AddUser([FromBody] UserApi user)
         {
+            if (user != null) 
+            {
+                var useIdent = new IdentityUser { UserName = user.Name, Email = user.Email };
+                await _userManager.CreateAsync(useIdent, user.Password);
+                await _userManager.AddToRoleAsync(useIdent, user.Role.RoleName);
+            }
+            return Ok();
+        }
+        //[HttpDelete(("{name}"))]
+        [HttpDelete("DellUser/{user}")]
+        public async Task<IActionResult> DellUser(string user)
+        {
+            var userIdent = await _userManager.FindByNameAsync(user);
+            await _userManager.DeleteAsync(userIdent);
             return Ok();
         }
         [HttpGet("GetAllUser")]
         public async Task<IActionResult> GetAllUser()
         {
             List<UserApi> Users = new();
-            foreach (var item in _sign.UserManager.Users)
+            var allUsers = _userManager.Users.ToList();
+            foreach (var item in allUsers)
             {
-                Users.Add(new UserApi { Name = item.UserName, Email = item.Email, Role = new RoleApi { RoleName = "Admin" } });
+               var role = await _userManager.GetRolesAsync(item);
+               Users.Add(new UserApi { Name = item.UserName, Email = item.Email, Role = new RoleApi { RoleName = role.FirstOrDefault() } });
             }
             return Ok(Users);
         }

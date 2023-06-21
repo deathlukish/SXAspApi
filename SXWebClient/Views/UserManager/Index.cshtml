@@ -8,7 +8,7 @@
             <th>Имя</th>
             <th>Почта</th>
             <th>Роль</th>
-@*            <th></th>*@
+            <th></th>
         </tr>
     </thead>
     <tbody>
@@ -19,13 +19,13 @@
                     <td>@item.Name</td>
                     <td>@item.Email</td>
                     <td>@item.Role?.RoleName</td>
-                    @*<td>
-                        <a asp-action="Edit" asp-route-id="@item.Id">Редактировать</a> |
-                        <a asp-action="Details" asp-route-id="@item.Id">Детали</a> |
-                        <a asp-action="Remove" asp-route-id="@item.Id">Удалить</a> 
-                    </td>*@
+                    <td>
+               <form asp-action="Delete" asp-route-name="@item.Name" method="post">
+                 <input type="submit" value="Удалить"/>
+              </form>   
+                    </td>
                   </tr>
         }
     </tbody>
 </table>
-<p><a asp-action="Create">Добавить запись</a></p>
+<p><a asp-action="NewUser">Добавить пользователя</a></p>

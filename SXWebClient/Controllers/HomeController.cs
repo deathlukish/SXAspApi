@@ -50,7 +50,7 @@ namespace SXWebClient.Controllers
         }
         [HttpPost]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,FirstName,MiddleName,LastName,Phone,Description,Adres")] PhoneBookDetail note)
+        public async Task<IActionResult> Edit([Bind("Id,FirstName,MiddleName,LastName,Phone,Description,Adres")] PhoneBookDetail note)
         {
             var serialize = JsonSerializer.Serialize(note);
             var requestContent = new StringContent(serialize, Encoding.UTF8, "application/json-patch+json");

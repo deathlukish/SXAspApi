@@ -1,0 +1,70 @@
+﻿@model SharedLibPhoneBook.NewUser
+@{
+    Layout = "_Layout";
+}
+
+<h2>NewUser</h2>
+
+@using (Html.BeginForm())
+{
+        <table width="100%">
+            <tr>
+                <td align="center">
+                    <table>
+                        <tr>
+                            <td align="left">
+                            @Html.LabelFor(m => m.Name)
+                            </td>
+                            <td align="right">
+                            @Html.EditorFor(m => m.Name, new { htmlAttributes = new { @class = "form-control", placeholder = "Логин"}})
+                                &nbsp;&nbsp;
+                                <br />
+                            @Html.ValidationMessageFor(m => m.Name)
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="left">
+                            @Html.LabelFor(m => m.Email)
+                                </td>
+                                <td align="right">
+                            @Html.EditorFor(m => m.Email, new { htmlAttributes = new { @class = "form-control", placeholder = "Почта"}})
+                                    &nbsp;&nbsp;
+                                    <br />
+                            @Html.ValidationMessageFor(m => m.Email)
+                            </td>
+                         </tr>
+                        <tr>
+                            <td align="left">
+                            @Html.LabelFor(m => m.Password)
+                            </td>
+                            <td align="right">
+                            @Html.EditorFor(m => m.Password, new { htmlAttributes = new { @class = "form-control", placeholder = "Пароль" } })
+                                &nbsp;&nbsp;
+                                <br />
+                            @Html.ValidationMessageFor(m => m.Password)
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="left">
+                            @Html.LabelFor(m => m.RepPaswword)
+                                </td>
+                                <td align="right">
+                            @Html.EditorFor(m => m.RepPaswword, new { htmlAttributes = new { @class = "form-control", placeholder = "Повторите" } })
+                                    &nbsp;&nbsp;
+                                    <br />
+                            @Html.ValidationMessageFor(m => m.RepPaswword)
+                                </td>
+                         </tr>
+                        <tr>
+                            <td colspan="2" align="center">
+                                <input type="submit" value="Добавить" class="btn btn-primary" />
+                            </td>
+                        </tr>
+                    </table>
+                    <br />
+                    <br />
+                @ViewBag.ErrorMessage
+                </td>
+            </tr>
+        </table>
+}
