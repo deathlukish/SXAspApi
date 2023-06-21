@@ -12,11 +12,10 @@
             <th></th>
         </tr>
     </thead>
-    <tbody>
-        
+    <tbody>       
         @foreach (var item in Model)
         {
-              <tr>
+            <tr>
                 <td>@item.Id</td>
                 <td>@item.LastName</td>
                 <td>@item.FirstName</td>
@@ -32,11 +31,11 @@
                         <a asp-action = "Remove" asp-route-id = "@item.Id" >Удалить</a>
                     }
                 </td>
-              </tr>
+             </tr>
         }
     </tbody>
 </table>
-@if (User.IsInRole("Admin") || User.IsInRole("User"))
+@if (User.Identity.IsAuthenticated)
 {
 <p><a asp-action="Create">Добавить запись</a></p>
 }
