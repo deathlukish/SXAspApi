@@ -24,7 +24,10 @@
                             <a class="nav-link text-dark" asp-controller="home" asp-area="" asp-action="Index">Список</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-controller="UserManager" asp-action="Index">Пользователи</a>
+                            @if (User.IsInRole("Admin"))
+                            {
+                                <a class="nav-link text-dark" asp-controller="UserManager" asp-action="Index">Пользователи</a>
+                            }
                         </li>
                         <li class="nav-item">
                             @if (!User.Identity.IsAuthenticated)

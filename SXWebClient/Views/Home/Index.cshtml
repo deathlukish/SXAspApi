@@ -22,12 +22,21 @@
                 <td>@item.FirstName</td>
                 <td>@item.MiddleName</td>
                 <td>
-                    <a asp-action="Edit" asp-route-id="@item.Id">Редактировать</a> |
-                    <a asp-action="Details" asp-route-id="@item.Id">Детали</a> |
-                    <a asp-action="Remove" asp-route-id="@item.Id">Удалить</a> 
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <a asp-action="Details" asp-route-id="@item.Id">Детали</a>                   
+                    }
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <a asp-action="Edit" asp-route-id="@item.Id">Редактировать</a>                    
+                        <a asp-action = "Remove" asp-route-id = "@item.Id" >Удалить</a>
+                    }
                 </td>
               </tr>
         }
     </tbody>
 </table>
+@if (User.IsInRole("Admin") || User.IsInRole("User"))
+{
 <p><a asp-action="Create">Добавить запись</a></p>
+}
